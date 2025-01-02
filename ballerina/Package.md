@@ -1,6 +1,10 @@
 ## Overview
 
-[//]: # (TODO: Add overview mentioning the purpose of the module, supported REST API versions, and other high-level details.)
+[HubSpot](https://developers.hubspot.com/docs/reference/api) is an AI-powered customer platform with all the software, integrations, and resources you need to connect your marketing, sales, and customer service
+
+The `hubspot.crm.engagement.notes` package offers APIs to connect and interact with [Notes 
+Engagements API](https://developers.hubspot.com/docs/reference/api/crm/engagements/notes) endpoints, specifically based on [HubSpot API v3](https://developers.hubspot.com/docs/reference/api).
+
 
 ## Setup guide
 
