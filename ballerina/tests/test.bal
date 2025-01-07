@@ -5,10 +5,31 @@ import ballerina/io;
 import ballerina/http;
 import ballerina/test;
 import ballerina/oauth2;
+import ballerina/time;
 
+// Variables required for authentication
 configurable string clientId = ?;
 configurable string clientSecret = ?;
 configurable string refreshToken = ?;
+
+// Variables required for test functions
+configurable string batchReadNoteId1 = ?; 
+configurable string batchReadNoteId2 = ?; 
+
+configurable string batchUpdateNoteId1 = ?;
+configurable string batchUpdateNoteId2 = ?;
+
+configurable string batchDeleteNoteId1 = ?;
+configurable string batchDeleteNoteId2 = ?;
+
+configurable string batchUpsertNoteId1 = ?;
+configurable string batchUpsertNoteId2 = ?;
+
+configurable string getByIdNoteId = ?;
+
+configurable string updateNoteId = ?;
+
+configurable string deleteNoteId = ?;
 
 // ID of the test company created for testing
 configurable string companyId = ?;
@@ -28,13 +49,46 @@ ConnectionConfig config = {auth : auth};
 final Client baseClient = check new Client(config, serviceUrl = "https://api.hubapi.com/crm/v3/objects/notes");
 
 @test:Config {}
-isolated function  testPost_batch_read_read() {
-    test:assertTrue(1 == 1);
+isolated function  testPost_batch_read_read() returns error? {
+    BatchReadInputSimplePublicObjectId payload =
+    {
+        propertiesWithHistory: [],
+        inputs: [
+            {id: batchReadNoteId1},
+            {id: batchReadNoteId2}
+        ],
+        properties: []
+    };
+
+    BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check baseClient->/batch/read.post(payload);
+    test:assertTrue(response.results.length() > 0);
 }
 
 @test:Config {}
-isolated function  testPost_batch_upsert_upsert() {
-    test:assertTrue(1 == 1);
+isolated function  testPost_batch_upsert_upsert() returns error? {
+    BatchInputSimplePublicObjectBatchInputUpsert payload =
+    {
+        inputs: [
+            {
+                idProperty: "hs_timestamp",
+                id: batchUpsertNoteId1,
+                properties: {
+                    "hs_note_body": "ABC"
+                }
+            },
+            {
+                idProperty: "hs_timestamp",
+                id:batchUpsertNoteId2,
+                properties: {
+                    "hs_note_body": "ABCD"
+                }
+            }
+        ]
+    };
+    BatchResponseSimplePublicUpsertObject|BatchResponseSimplePublicUpsertObjectWithErrors response = check baseClient->/batch/upsert.post(payload);
+    io:println("GGGGGGGGGGGG");
+    io:println(response.status);
+    test:assertTrue(response.status == "COMPLETE");
 }
 
 @test:Config {}
@@ -69,31 +123,97 @@ isolated function  testPost_search_doSearch() returns error?{
 }
 
 @test:Config {}
-isolated function  testPost_batch_update_update() {
-    test:assertTrue(1 == 1);
+isolated function  testPost_batch_update_update() returns error? {
+    BatchInputSimplePublicObjectBatchInput payload =
+    {
+        inputs: [
+            {
+                id: batchUpdateNoteId1,
+                properties: {
+                    "hs_note_body": "Greetings 1"
+                }
+            },
+            {
+                id: batchUpdateNoteId2,
+                properties: {
+                    "hs_note_body": "Greetings 2"
+                }
+            }
+        ]
+    };
+
+    BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check baseClient->/batch/update.post(payload);
+
+    SimplePublicObject[] results = response.results;
+    foreach SimplePublicObject result in results {
+        test:assertTrue(result.id == batchUpdateNoteId1 || result.id == batchUpdateNoteId2);
+    }
 }
 
 @test:Config {}
-isolated function  testPost_batch_create_create() {
-    test:assertTrue(1 == 1);
+isolated function  testPost_batch_create_create() returns error? {
+    BatchInputSimplePublicObjectInputForCreate payload =
+    {
+        inputs: [
+            {
+                associations: [{
+                types: [{
+                    associationCategory: "HUBSPOT_DEFINED",
+                    associationTypeId: 190
+                    }],
+                to: {
+                    id: companyId
+                }
+            }],
+                properties: {
+                    "hs_timestamp": time:utcToString(time:utcNow()),
+                    "hs_note_body": "Hello World 1"
+                }
+            },
+            {
+                associations: [{
+                types: [{
+                    associationCategory: "HUBSPOT_DEFINED",
+                    associationTypeId: 190
+                    }],
+                to: {
+                    id: companyId
+                }
+            }],
+                properties: {
+                    "hs_timestamp": time:utcToString(time:utcNow()),
+                    "hs_note_body": "Hello World 2"
+                }
+            }
+        ]
+    };
+
+    BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check baseClient->/batch/create.post(payload);
+    test:assertTrue(response.status == "COMPLETE");
 }
 
 @test:Config {}
-isolated function  testPost_batch_archive_archive() {
-    test:assertTrue(1 == 1);
+isolated function  testPost_batch_archive_archive() returns error? {
+    BatchInputSimplePublicObjectId payload =
+    {
+        inputs: [
+            {id: batchDeleteNoteId1},
+            {id: batchDeleteNoteId2}
+        ]
+    };
+
+    http:Response response = check baseClient->/batch/archive.post(payload);
+    test:assertTrue(response.statusCode == 204);
 }
 
 @test:Config {}
 isolated function  testGet_getById() returns error? {
-    string noteId = "68259592091";
-    SimplePublicObjectWithAssociations response = check baseClient->/[noteId]();
+    SimplePublicObjectWithAssociations response = check baseClient->/[getByIdNoteId]();
     test:assertTrue(response.id != "");
 }
 
 @test:Config {}
 isolated function  testPatch_update() returns error? {
-    string noteId = "68292461628";
-
     SimplePublicObjectInput payload =
     {
         properties: {
@@ -101,14 +221,13 @@ isolated function  testPatch_update() returns error? {
         }
     };
 
-    SimplePublicObject response = check baseClient->/[noteId].patch(payload);
-    test:assertTrue(response.id == noteId);
+    SimplePublicObject response = check baseClient->/[updateNoteId].patch(payload);
+    test:assertTrue(response.id == updateNoteId);
 }
 
 @test:Config {}
 isolated function  testDelete_archive() returns error? {
-    string noteId = "68301768259";
-    http:Response response = check baseClient->/[noteId].delete();
+    http:Response response = check baseClient->/[deleteNoteId].delete();
     test:assertTrue(response.statusCode == 204);
 }
 
@@ -133,10 +252,8 @@ isolated function  testPost_notes_create() returns error?{
         }
     }],
         properties: {
-            "hs_timestamp": "2024-01-06T10:18:22Z",
+            "hs_timestamp": time:utcToString(time:utcNow()),
             "hs_note_body": "Hello"
-            // "hubspot_owner_id": "48579884"
-            // "hs_attachment_ids": "1234; 5678"
         }
     };
 
