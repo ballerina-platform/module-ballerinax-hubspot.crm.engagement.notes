@@ -1,10 +1,8 @@
 ## Overview
 
-[HubSpot](https://developers.hubspot.com/docs/reference/api) is an AI-powered customer platform with all the software, integrations, and resources you need to connect your marketing, sales, and customer service
+[HubSpot](https://www.hubspot.com/) is an AI-powered customer relationship management (CRM) platform.
 
-The `hubspot.crm.engagement.notes` package offers APIs to connect and interact with [Notes 
-Engagements API](https://developers.hubspot.com/docs/reference/api/crm/engagements/notes) endpoints, specifically based on [HubSpot API v3](https://developers.hubspot.com/docs/reference/api).
-
+The `ballerinax/module-ballerinax-hubspot.crm.engagement.notes` connector offers APIs to connect and interact with the [Hubspot Engagement Notes API](https://developers.hubspot.com/docs/reference/api/crm/engagements/notes) endpoints, specifically based on the [HubSpot REST API](https://developers.hubspot.com/docs/reference/api/overview).
 
 ## Setup guide
 
@@ -83,10 +81,6 @@ Before proceeding with the Quickstart, ensure you have obtained the Access Token
    <img src="../docs/setup/resources/hubspot-oauth-consent-screen.png" style="width: 70%;">
 
 3. A code will be displayed in the browser. Copy the code.
-
-   ```
-   Received code: na1-129d-860c-xxxx-xxxx-xxxxxxxxxxxx
-   ```
 
 4. Run the following curl command. Replace the `<YOUR_CLIENT_ID>`, `<YOUR_REDIRECT_URI`> and `<YOUR_CLIENT_SECRET>` with your specific value. Use the code you received in the above step 3 as the `<CODE>`.
 
