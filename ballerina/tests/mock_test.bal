@@ -24,15 +24,15 @@ function mockTestPost_batch_upsert() returns error? {
     {
         inputs: [
             {
-                idProperty: "hs_timestamp",
-                id: batchUpsertNoteId1,
+                idProperty: "unique_property",
+                id: "property_value_1",
                 properties: {
                     "hs_note_body": "ABC"
                 }
             },
             {
-                idProperty: "hs_timestamp",
-                id: batchUpsertNoteId2,
+                idProperty: "unique_property",
+                id: "property_value_2",
                 properties: {
                     "hs_note_body": "ABCD"
                 }

@@ -34,9 +34,6 @@ configurable string batchUpdateNoteId2 = ?;
 configurable string batchDeleteNoteId1 = ?;
 configurable string batchDeleteNoteId2 = ?;
 
-configurable string batchUpsertNoteId1 = ?;
-configurable string batchUpsertNoteId2 = ?;
-
 configurable string getByIdNoteId = ?;
 
 configurable string updateNoteId = ?;
