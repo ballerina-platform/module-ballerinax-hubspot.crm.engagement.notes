@@ -72,33 +72,6 @@ isolated function testPost_batch_read_read() returns error? {
 }
 
 @test:Config {}
-isolated function testPost_batch_upsert_upsert() returns error? {
-    // BatchInputSimplePublicObjectBatchInputUpsert payload =
-    // {
-    //     inputs: [
-    //         {
-    //             idProperty: "hs_timestamp",
-    //             id: batchUpsertNoteId1,
-    //             properties: {
-    //                 "hs_note_body": "ABC"
-    //             }
-    //         },
-    //         {
-    //             idProperty: "hs_timestamp",
-    //             id:batchUpsertNoteId2,
-    //             properties: {
-    //                 "hs_note_body": "ABCD"
-    //             }
-    //         }
-    //     ]
-    // };
-    // BatchResponseSimplePublicUpsertObject|BatchResponseSimplePublicUpsertObjectWithErrors response = check hubSpotNotes->/batch/upsert.post(payload);
-    // test:assertTrue(response.status == "COMPLETE");
-
-    test:assertTrue(true);
-}
-
-@test:Config {}
 isolated function testPost_search_doSearch() returns error? {
     PublicObjectSearchRequest payload1 =
     {
