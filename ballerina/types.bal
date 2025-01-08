@@ -260,17 +260,17 @@ public type ClientHttp1Settings record {|
     ProxyConfig proxy?;
 |};
 
-public type PreviousPage record {
-    string before;
-    string link?;
-};
-
 public type BatchInputSimplePublicObjectBatchInput record {
     SimplePublicObjectBatchInput[] inputs;
 };
 
 public type BatchInputSimplePublicObjectInputForCreate record {
     SimplePublicObjectInputForCreate[] inputs;
+};
+
+public type PreviousPage record {
+    string before;
+    string link?;
 };
 
 public type SimplePublicUpsertObject record {
@@ -291,22 +291,6 @@ public type SimplePublicObjectBatchInput record {
     record {|string...;|} properties;
 };
 
-# Represents the Queries record for the operation: get-/crm/v3/objects/notes_getPage
-public type GetCrmV3ObjectsNotes_getpageQueries record {
-    # A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.
-    string[] associations?;
-    # Whether to return only results that have been archived.
-    boolean archived = false;
-    # A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored. Usage of this parameter will reduce the maximum number of objects that can be read by a single request.
-    string[] propertiesWithHistory?;
-    # The maximum number of results to display per page.
-    int:Signed32 'limit = 10;
-    # The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.
-    string after?;
-    # A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.
-    string[] properties?;
-};
-
 # Represents the Queries record for the operation: post-/crm/v3/objects/notes/batch/read_read
 public type PostCrmV3ObjectsNotesBatchRead_readQueries record {
     # Whether to return only results that have been archived.
@@ -323,6 +307,22 @@ public type GetCrmV3ObjectsNotesNoteid_getbyidQueries record {
     string[] propertiesWithHistory?;
     # The name of a property whose values are unique for this object type
     string idProperty?;
+    # A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.
+    string[] properties?;
+};
+
+# Represents the Queries record for the operation: get-/crm/v3/objects/notes_getPage
+public type GetCrmV3ObjectsNotes_getpageQueries record {
+    # A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.
+    string[] associations?;
+    # Whether to return only results that have been archived.
+    boolean archived = false;
+    # A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored. Usage of this parameter will reduce the maximum number of objects that can be read by a single request.
+    string[] propertiesWithHistory?;
+    # The maximum number of results to display per page.
+    int:Signed32 'limit = 10;
+    # The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.
+    string after?;
     # A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.
     string[] properties?;
 };
