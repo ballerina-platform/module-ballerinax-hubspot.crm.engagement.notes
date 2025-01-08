@@ -53,12 +53,7 @@ OAuth2RefreshTokenGrantConfig auth = {
     credentialBearer: oauth2:POST_BODY_BEARER // This line should be added when you are going to create auth object.
 };
 
-// configurable http:BearerTokenConfig & readonly authConfig = ?;
-// ConnectionConfig config = {auth : authConfig};
-
-ConnectionConfig config = {auth: auth};
-
-final Client baseClient = check new Client(config, serviceUrl = "https://api.hubapi.com/crm/v3/objects/notes");
+final Client hubSpotNotes = check new ({ auth });
 
 @test:Config {}
 isolated function testPost_batch_read_read() returns error? {
