@@ -1,4 +1,4 @@
-// Copyright (c) 2024, WSO2 LLC. (http://www.wso2.com).
+// Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com).
 //
 // WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -53,7 +53,7 @@ OAuth2RefreshTokenGrantConfig auth = {
     credentialBearer: oauth2:POST_BODY_BEARER // This line should be added when you are going to create auth object.
 };
 
-final Client hubSpotNotes = check new ({ auth });
+final Client hubSpotNotes = check new ({auth});
 
 @test:Config {}
 isolated function testPost_batch_read_read() returns error? {
@@ -67,7 +67,7 @@ isolated function testPost_batch_read_read() returns error? {
         properties: []
     };
 
-    BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check baseClient->/batch/read.post(payload);
+    BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check hubSpotNotes->/batch/read.post(payload);
     test:assertTrue(response.results.length() > 0);
 }
 
@@ -92,7 +92,7 @@ isolated function testPost_batch_upsert_upsert() returns error? {
     //         }
     //     ]
     // };
-    // BatchResponseSimplePublicUpsertObject|BatchResponseSimplePublicUpsertObjectWithErrors response = check baseClient->/batch/upsert.post(payload);
+    // BatchResponseSimplePublicUpsertObject|BatchResponseSimplePublicUpsertObjectWithErrors response = check hubSpotNotes->/batch/upsert.post(payload);
     // test:assertTrue(response.status == "COMPLETE");
 
     test:assertTrue(true);
@@ -115,7 +115,7 @@ isolated function testPost_search_doSearch() returns error? {
         ]
     };
 
-    CollectionResponseWithTotalSimplePublicObjectForwardPaging response = check baseClient->/search.post(payload1);
+    CollectionResponseWithTotalSimplePublicObjectForwardPaging response = check hubSpotNotes->/search.post(payload1);
     test:assertTrue(response.results.length() > 0);
 
     PublicObjectSearchRequest payload2 =
@@ -133,7 +133,7 @@ isolated function testPost_search_doSearch() returns error? {
         ]
     };
 
-    response = check baseClient->/search.post(payload2);
+    response = check hubSpotNotes->/search.post(payload2);
     test:assertTrue(response.results.length() == 0);
 }
 
@@ -157,7 +157,7 @@ isolated function testPost_batch_update_update() returns error? {
         ]
     };
 
-    BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check baseClient->/batch/update.post(payload);
+    BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check hubSpotNotes->/batch/update.post(payload);
 
     SimplePublicObject[] results = response.results;
     foreach SimplePublicObject result in results {
@@ -211,7 +211,7 @@ isolated function testPost_batch_create_create() returns error? {
         ]
     };
 
-    BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check baseClient->/batch/create.post(payload);
+    BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check hubSpotNotes->/batch/create.post(payload);
     test:assertEquals(response.status, "COMPLETE");
 }
 
@@ -225,13 +225,13 @@ isolated function testPost_batch_archive_archive() returns error? {
         ]
     };
 
-    http:Response response = check baseClient->/batch/archive.post(payload);
+    http:Response response = check hubSpotNotes->/batch/archive.post(payload);
     test:assertEquals(response.statusCode, 204);
 }
 
 @test:Config {}
 isolated function testGet_getById() returns error? {
-    SimplePublicObjectWithAssociations response = check baseClient->/[getByIdNoteId]();
+    SimplePublicObjectWithAssociations response = check hubSpotNotes->/[getByIdNoteId]();
     test:assertNotEquals(response.id, "");
 }
 
@@ -244,19 +244,19 @@ isolated function testPatch_update() returns error? {
         }
     };
 
-    SimplePublicObject response = check baseClient->/[updateNoteId].patch(payload);
+    SimplePublicObject response = check hubSpotNotes->/[updateNoteId].patch(payload);
     test:assertEquals(response.id, updateNoteId);
 }
 
 @test:Config {}
 isolated function testDelete_archive() returns error? {
-    http:Response response = check baseClient->/[deleteNoteId].delete();
+    http:Response response = check hubSpotNotes->/[deleteNoteId].delete();
     test:assertEquals(response.statusCode, 204);
 }
 
 @test:Config {}
 isolated function testGet_notes_getPage() returns error? {
-    CollectionResponseSimplePublicObjectWithAssociationsForwardPaging response = check baseClient->/();
+    CollectionResponseSimplePublicObjectWithAssociationsForwardPaging response = check hubSpotNotes->/();
     test:assertTrue(response.results.length() > 0);
 }
 
@@ -283,6 +283,6 @@ isolated function testPost_notes_create() returns error? {
         }
     };
 
-    SimplePublicObject response = check baseClient->/.post(payload);
+    SimplePublicObject response = check hubSpotNotes->/.post(payload);
     test:assertNotEquals(response.createdAt, "");
 }
