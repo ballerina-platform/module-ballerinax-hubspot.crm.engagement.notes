@@ -109,7 +109,56 @@ Before proceeding with the Quickstart, ensure you have obtained the Access Token
 
 ## Quickstart
 
-[//]: # (TODO: Add a quickstart guide to demonstrate a basic functionality of the module, including sample code snippets.)
+To use the `HubSpot Engagement Notes` connector in your Ballerina application, update the `.bal` file as shown below:
+
+### Step 1: Import the module
+
+Import the `hubspot.crm.engagement.notes` module and `oauth2` module.
+
+```ballerina
+import ballerina/oauth2;
+import ballerinax/hubspot.crm.engagement.notes as engagementNotes;
+```
+
+### Step 2: Instantiate a new connector
+
+1. Create a `Config.toml` file and, configure the obtained credentials in the above steps as follows:
+
+   ```toml
+   clientId = "<Client Id>"
+   clientSecret = "<Client Secret>"
+   refreshToken = "<Refresh Token>"
+   ```
+
+2. Instantiate `engagementNotes:OAuth2RefreshTokenGrantConfig` with the obtained credentials and initialize the connector with it.
+
+    ```ballerina 
+    configurable string clientId = ?;
+    configurable string clientSecret = ?;
+    configurable string refreshToken = ?;
+
+    engagementNotes:OAuth2RefreshTokenGrantConfig auth = {
+        clientId,
+        clientSecret,
+        refreshToken,
+        credentialBearer: oauth2:POST_BODY_BEARER
+    };
+
+    final engagementNotes:Client hubSpotNotes = check new ({auth});
+    ```
+
+### Step 3: Invoke the connector operation
+
+Now, utilize the available connector operations. A sample use case is shown below.
+
+#### Get the note with a given ID
+
+```ballerina
+public function main() returns error? {
+string noteId = ""; // ID of the note that needs to be read
+engagementNotes:SimplePublicObjectWithAssociations readResponse = check hubSpotNotes->/[noteId]();
+}  
+```
 
 ## Examples
 
