@@ -1,0 +1,14 @@
+[package]
+org = "wso2"
+name = "manage_notes"
+version = "0.1.0"
+distribution = "2201.10.3"
+
+[build-options]
+observabilityIncluded = true
+
+[[dependency]]
+org= "ballerinax"
+name = "hubspot.crm.engagement.notes"
+version = "1.0.0"
+repository = "local"
