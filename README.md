@@ -136,21 +136,24 @@ import ballerinax/hubspot.crm.engagement.notes as hsengnotes;
    clientId = "<Client Id>"
    clientSecret = "<Client Secret>"
    refreshToken = "<Refresh Token>"
+   ```
 
-    ```ballerina 
-    configurable string clientId = ?;
-    configurable string clientSecret = ?;
-    configurable string refreshToken = ?;
+2. Instantiate `hsengnotes:OAuth2RefreshTokenGrantConfig` with the obtained credentials and initialize the connector with it.
 
-    hsengnotes:OAuth2RefreshTokenGrantConfig auth = {
-        clientId,
-        clientSecret,
-        refreshToken,
-        credentialBearer: oauth2:POST_BODY_BEARER
-    };
+   ```ballerina 
+   configurable string clientId = ?;
+   configurable string clientSecret = ?;
+   configurable string refreshToken = ?;
 
-    final hsengnotes:Client hubSpotNotes = check new ({ auth });
-    ```
+   hsengnotes:OAuth2RefreshTokenGrantConfig auth = {
+      clientId,
+      clientSecret,
+      refreshToken,
+      credentialBearer: oauth2:POST_BODY_BEARER
+   };
+
+   final hsengnotes:Client hubSpotNotes = check new ({auth});
+   ```
 
 ### Step 3: Invoke the connector operation
 
@@ -160,9 +163,15 @@ Now, utilize the available connector operations. A sample use case is shown belo
 
 ```ballerina
 public function main() returns error? {
-string noteId = ""; // ID of the note that needs to be read
-hsengnotes:SimplePublicObjectWithAssociations readResponse = check hubSpotNotes->/[noteId]();
+   string noteId = ""; // ID of the note that needs to be read
+   hsengnotes:SimplePublicObjectWithAssociations readResponse = check hubSpotNotes->/[noteId]();
 }  
+```
+
+### Step 4: Run the Ballerina application
+
+```bash
+bal run
 ```
 
 ## Examples
