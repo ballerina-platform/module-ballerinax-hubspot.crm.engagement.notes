@@ -2,7 +2,7 @@ import ballerina/http;
 import ballerina/io;
 import ballerina/oauth2;
 import ballerina/time;
-import ballerinax/hubspot.crm.engagement.notes as engagementNotes;
+import ballerinax/hubspot.crm.engagement.notes as hsengnotes;
 
 // Variables required for authentication
 configurable string clientId = ?;
@@ -12,14 +12,13 @@ configurable string refreshToken = ?;
 // ID of the test company created for testing
 configurable string companyId = ?;
 
-engagementNotes:OAuth2RefreshTokenGrantConfig auth = {
+hsengnotes:OAuth2RefreshTokenGrantConfig auth = {
     clientId,
     clientSecret,
     refreshToken,
     credentialBearer: oauth2:POST_BODY_BEARER // This line should be added when you are going to create auth object.
 };
-
-final engagementNotes:Client hubSpotNotes = check new ({auth});
+final hsengnotes:Client hubSpotNotes = check new ({ auth });
 
 public function main() returns error? {
     // Creating a note
