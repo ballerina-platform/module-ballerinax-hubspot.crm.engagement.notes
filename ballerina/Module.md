@@ -122,15 +122,7 @@ import ballerinax/hubspot.crm.engagement.notes as hsengnotes;
 
 ### Step 2: Instantiate a new connector
 
-1. Create a `Config.toml` file and, configure the obtained credentials in the above steps as follows:
-
-   ```toml
-   clientId = "<Client Id>"
-   clientSecret = "<Client Secret>"
-   refreshToken = "<Refresh Token>"
-   ```
-
-2. Instantiate `hsengnotes:OAuth2RefreshTokenGrantConfig` with the obtained credentials and initialize the connector with it.
+1. Instantiate `hsengnotes:OAuth2RefreshTokenGrantConfig` with the obtained credentials and initialize the connector with it.
 
    ```ballerina 
    configurable string clientId = ?;
@@ -145,6 +137,14 @@ import ballerinax/hubspot.crm.engagement.notes as hsengnotes;
    };
 
    final hsengnotes:Client hubSpotNotes = check new ({auth});
+   ```
+
+2. Create a `Config.toml` file and, configure the obtained credentials in the above steps as follows:
+
+   ```toml
+   clientId = "<Client Id>"
+   clientSecret = "<Client Secret>"
+   refreshToken = "<Refresh Token>"
    ```
 
 ### Step 3: Invoke the connector operation
