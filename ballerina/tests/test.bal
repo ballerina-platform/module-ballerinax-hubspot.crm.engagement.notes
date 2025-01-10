@@ -16,18 +16,18 @@
 
 import ballerina/http;
 import ballerina/oauth2;
+import ballerina/os;
 import ballerina/test;
 import ballerina/time;
 
 // Variable to select test mode
-configurable boolean isLiveServer = ?;
+configurable boolean isLiveServer = os:getEnv("IS_LIVE_SERVER") == "true";
 
 // Variables required for authentication
-configurable string clientId = ?;
-configurable string clientSecret = ?;
-configurable string refreshToken = ?;
-
-final string serviceUrl = isLiveServer ? "https://api.hubapi.com/crm/v3/objects/notes" : "http://localhost:9090/crm/v3/objects/notes";
+configurable string clientId = isLiveServer ? os:getEnv("clientId") : "test";
+configurable string clientSecret = isLiveServer ? os:getEnv("clientSecret") : "test";
+configurable string refreshToken = isLiveServer ? os:getEnv("refreshToken") : "test";
+configurable string serviceUrl = isLiveServer ? "https://api.hubapi.com/crm/v3/objects/notes" : "http://localhost:9090/crm/v3/objects/notes";
 
 // Variables required for test functions
 configurable string batchReadNoteId1 = ?;
