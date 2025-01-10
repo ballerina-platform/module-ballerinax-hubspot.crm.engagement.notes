@@ -19,10 +19,15 @@ import ballerina/oauth2;
 import ballerina/test;
 import ballerina/time;
 
+// Variable to select test mode
+configurable boolean isLiveServer = ?;
+
 // Variables required for authentication
 configurable string clientId = ?;
 configurable string clientSecret = ?;
 configurable string refreshToken = ?;
+
+final string serviceUrl = isLiveServer ? "https://api.hubapi.com/crm/v3/objects/notes" : "http://localhost:9090/crm/v3/objects/notes";
 
 // Variables required for test functions
 configurable string batchReadNoteId1 = ?;
@@ -50,9 +55,11 @@ OAuth2RefreshTokenGrantConfig auth = {
     credentialBearer: oauth2:POST_BODY_BEARER // This line should be added when you are going to create auth object.
 };
 
-final Client hubSpotNotes = check new ({auth});
+final Client hubSpotNotes = check new ({auth}, serviceUrl);
 
-@test:Config {}
+@test:Config {
+    groups: ["live_tests"]
+}
 isolated function testPost_batch_read_read() returns error? {
     BatchReadInputSimplePublicObjectId payload =
     {
@@ -68,7 +75,37 @@ isolated function testPost_batch_read_read() returns error? {
     test:assertTrue(response.results.length() > 0);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["mock_tests"]
+}
+function testPost_batch_upsert() returns error? {
+    BatchInputSimplePublicObjectBatchInputUpsert payload =
+    {
+        inputs: [
+            {
+                idProperty: "unique_property",
+                id: "property_value_1",
+                properties: {
+                    "hs_note_body": "ABC"
+                }
+            },
+            {
+                idProperty: "unique_property",
+                id: "property_value_2",
+                properties: {
+                    "hs_note_body": "ABCD"
+                }
+            }
+        ]
+    };
+
+    BatchResponseSimplePublicUpsertObject response = check hubSpotNotes->/batch/upsert.post(payload);
+    test:assertTrue(response.status is "COMPLETE");
+}
+
+@test:Config {
+    groups: ["live_tests"]
+}
 isolated function testPost_search_doSearch() returns error? {
     PublicObjectSearchRequest payload1 =
     {
@@ -107,7 +144,9 @@ isolated function testPost_search_doSearch() returns error? {
     test:assertTrue(response.results.length() == 0);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["live_tests"]
+}
 isolated function testPost_batch_update_update() returns error? {
     BatchInputSimplePublicObjectBatchInput payload =
     {
@@ -135,7 +174,9 @@ isolated function testPost_batch_update_update() returns error? {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["live_tests"]
+}
 isolated function testPost_batch_create_create() returns error? {
     BatchInputSimplePublicObjectInputForCreate payload =
     {
@@ -185,7 +226,9 @@ isolated function testPost_batch_create_create() returns error? {
     test:assertEquals(response.status, "COMPLETE");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["live_tests"]
+}
 isolated function testPost_batch_archive_archive() returns error? {
     BatchInputSimplePublicObjectId payload =
     {
@@ -199,13 +242,17 @@ isolated function testPost_batch_archive_archive() returns error? {
     test:assertEquals(response.statusCode, 204);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["live_tests"]
+}
 isolated function testGet_getById() returns error? {
     SimplePublicObjectWithAssociations response = check hubSpotNotes->/[getByIdNoteId]();
     test:assertNotEquals(response.id, "");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["live_tests"]
+}
 isolated function testPatch_update() returns error? {
     SimplePublicObjectInput payload =
     {
@@ -218,19 +265,25 @@ isolated function testPatch_update() returns error? {
     test:assertEquals(response.id, updateNoteId);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["live_tests"]
+}
 isolated function testDelete_archive() returns error? {
     http:Response response = check hubSpotNotes->/[deleteNoteId].delete();
     test:assertEquals(response.statusCode, 204);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["live_tests"]
+}
 isolated function testGet_notes_getPage() returns error? {
     CollectionResponseSimplePublicObjectWithAssociationsForwardPaging response = check hubSpotNotes->/();
     test:assertTrue(response.results.length() > 0);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["live_tests"]
+}
 isolated function testPost_notes_create() returns error? {
     SimplePublicObjectInputForCreate payload =
     {
