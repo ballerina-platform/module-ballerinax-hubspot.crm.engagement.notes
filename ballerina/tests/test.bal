@@ -27,6 +27,7 @@ configurable boolean isLiveServer = os:getEnv("IS_LIVE_SERVER") == "true";
 configurable string clientId = isLiveServer ? os:getEnv("clientId") : "test";
 configurable string clientSecret = isLiveServer ? os:getEnv("clientSecret") : "test";
 configurable string refreshToken = isLiveServer ? os:getEnv("refreshToken") : "test";
+
 configurable string serviceUrl = isLiveServer ? "https://api.hubapi.com/crm/v3/objects/notes" : "http://localhost:9090/crm/v3/objects/notes";
 
 // Variables required for test functions
@@ -58,7 +59,8 @@ OAuth2RefreshTokenGrantConfig auth = {
 final Client hubSpotNotes = check new ({auth}, serviceUrl);
 
 @test:Config {
-    groups: ["live_tests"]
+    groups: ["live_tests"],
+    enable: isLiveServer
 }
 isolated function testPost_batch_read_read() returns error? {
     BatchReadInputSimplePublicObjectId payload =
@@ -76,7 +78,8 @@ isolated function testPost_batch_read_read() returns error? {
 }
 
 @test:Config {
-    groups: ["mock_tests"]
+    groups: ["mock_tests"],
+    enable: !isLiveServer
 }
 function testPost_batch_upsert() returns error? {
     BatchInputSimplePublicObjectBatchInputUpsert payload =
@@ -104,7 +107,8 @@ function testPost_batch_upsert() returns error? {
 }
 
 @test:Config {
-    groups: ["live_tests"]
+    groups: ["live_tests"],
+    enable: isLiveServer
 }
 isolated function testPost_search_doSearch() returns error? {
     PublicObjectSearchRequest payload1 =
@@ -145,7 +149,8 @@ isolated function testPost_search_doSearch() returns error? {
 }
 
 @test:Config {
-    groups: ["live_tests"]
+    groups: ["live_tests"],
+    enable: isLiveServer
 }
 isolated function testPost_batch_update_update() returns error? {
     BatchInputSimplePublicObjectBatchInput payload =
@@ -175,7 +180,8 @@ isolated function testPost_batch_update_update() returns error? {
 }
 
 @test:Config {
-    groups: ["live_tests"]
+    groups: ["live_tests"],
+    enable: isLiveServer
 }
 isolated function testPost_batch_create_create() returns error? {
     BatchInputSimplePublicObjectInputForCreate payload =
@@ -227,7 +233,8 @@ isolated function testPost_batch_create_create() returns error? {
 }
 
 @test:Config {
-    groups: ["live_tests"]
+    groups: ["live_tests"],
+    enable: isLiveServer
 }
 isolated function testPost_batch_archive_archive() returns error? {
     BatchInputSimplePublicObjectId payload =
@@ -243,7 +250,8 @@ isolated function testPost_batch_archive_archive() returns error? {
 }
 
 @test:Config {
-    groups: ["live_tests"]
+    groups: ["live_tests"],
+    enable: isLiveServer
 }
 isolated function testGet_getById() returns error? {
     SimplePublicObjectWithAssociations response = check hubSpotNotes->/[getByIdNoteId]();
@@ -251,7 +259,8 @@ isolated function testGet_getById() returns error? {
 }
 
 @test:Config {
-    groups: ["live_tests"]
+    groups: ["live_tests"],
+    enable: isLiveServer
 }
 isolated function testPatch_update() returns error? {
     SimplePublicObjectInput payload =
@@ -266,7 +275,8 @@ isolated function testPatch_update() returns error? {
 }
 
 @test:Config {
-    groups: ["live_tests"]
+    groups: ["live_tests"],
+    enable: isLiveServer
 }
 isolated function testDelete_archive() returns error? {
     http:Response response = check hubSpotNotes->/[deleteNoteId].delete();
@@ -274,7 +284,8 @@ isolated function testDelete_archive() returns error? {
 }
 
 @test:Config {
-    groups: ["live_tests"]
+    groups: ["live_tests"],
+    enable: isLiveServer
 }
 isolated function testGet_notes_getPage() returns error? {
     CollectionResponseSimplePublicObjectWithAssociationsForwardPaging response = check hubSpotNotes->/();
@@ -282,7 +293,8 @@ isolated function testGet_notes_getPage() returns error? {
 }
 
 @test:Config {
-    groups: ["live_tests"]
+    groups: ["live_tests"],
+    enable: isLiveServer
 }
 isolated function testPost_notes_create() returns error? {
     SimplePublicObjectInputForCreate payload =
