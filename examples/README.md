@@ -16,11 +16,7 @@ The `ballerinax/hubspot.crm.engagement.notes` connector provides practical examp
     clientSecret = "<Client Secret>"
     refreshToken = "<Access Token>"
     ```
-
-## Prerequisites
-
-[//]: # (TODO: Add prerequisites)
-
+    
 ## Running an example
 
 Execute the following commands to build an example from the source:
