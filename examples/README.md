@@ -8,7 +8,7 @@ The `ballerinax/hubspot.crm.engagement.notes` connector provides practical examp
 
 ## Prerequisites
 
-1. Generate hubspot credentials to authenticate the connector as described in the [setup guide](../README.md).
+1. Generate hubspot credentials to authenticate the connector as described in the [setup guide](https://github.com/ballerina-platform/module-ballerinax-hubspot.crm.engagement.notes/tree/main/README.md).
 
 2. For each example, create a `Config.toml` file with the relevant configuration. Here's an example of how your `Config.toml` file should look:
     ```toml
