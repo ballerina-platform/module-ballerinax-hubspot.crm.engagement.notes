@@ -56,7 +56,24 @@ OAuth2RefreshTokenGrantConfig auth = {
     credentialBearer: oauth2:POST_BODY_BEARER // This line should be added when you are going to create auth object.
 };
 
-final Client hubSpotNotes = check new ({auth}, serviceUrl);
+final Client hubSpotNotes = check initClient();
+
+isolated function initClient() returns Client|error {
+    if isLiveServer {
+        OAuth2RefreshTokenGrantConfig auth = {
+            clientId: clientId,
+            clientSecret: clientSecret,
+            refreshToken: refreshToken,
+            credentialBearer: oauth2:POST_BODY_BEARER
+        };
+        return check new ({auth}, serviceUrl);
+    }
+    return check new ({
+        auth: {
+            token: "test-token"
+        }
+    }, serviceUrl);
+}
 
 @test:Config {
     groups: ["live_tests"],
