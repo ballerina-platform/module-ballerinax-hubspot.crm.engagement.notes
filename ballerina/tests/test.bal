@@ -30,40 +30,17 @@ configurable string refreshToken = isLiveServer ? os:getEnv("refreshToken") : "t
 
 configurable string serviceUrl = isLiveServer ? "https://api.hubapi.com/crm/v3/objects/notes" : "http://localhost:9090/crm/v3/objects/notes";
 
-// Variables required for test functions
-configurable string batchReadNoteId1 = ?;
-configurable string batchReadNoteId2 = ?;
-
-configurable string batchUpdateNoteId1 = ?;
-configurable string batchUpdateNoteId2 = ?;
-
-configurable string batchDeleteNoteId1 = ?;
-configurable string batchDeleteNoteId2 = ?;
-
-configurable string getByIdNoteId = ?;
-
-configurable string updateNoteId = ?;
-
-configurable string deleteNoteId = ?;
-
 // ID of the test company created for testing
-configurable string companyId = ?;
-
-OAuth2RefreshTokenGrantConfig auth = {
-    clientId,
-    clientSecret,
-    refreshToken,
-    credentialBearer: oauth2:POST_BODY_BEARER // This line should be added when you are going to create auth object.
-};
+final string companyId = "27985240367";
 
 final Client hubSpotNotes = check initClient();
 
 isolated function initClient() returns Client|error {
     if isLiveServer {
         OAuth2RefreshTokenGrantConfig auth = {
-            clientId: clientId,
-            clientSecret: clientSecret,
-            refreshToken: refreshToken,
+            clientId,
+            clientSecret,
+            refreshToken,
             credentialBearer: oauth2:POST_BODY_BEARER
         };
         return check new ({auth}, serviceUrl);
@@ -80,12 +57,61 @@ isolated function initClient() returns Client|error {
     enable: isLiveServer
 }
 isolated function testPost_batch_read_read() returns error? {
+    // Create a batch of notes in order to read them later
+    BatchInputSimplePublicObjectInputForCreate createPayload =
+    {
+        inputs: [
+            {
+                associations: [
+                    {
+                        types: [
+                            {
+                                associationCategory: "HUBSPOT_DEFINED",
+                                associationTypeId: 190
+                            }
+                        ],
+                        to: {
+                            id: companyId
+                        }
+                    }
+                ],
+                properties: {
+                    "hs_timestamp": time:utcToString(time:utcNow()),
+                    "hs_note_body": "Hello World 1"
+                }
+            },
+            {
+                associations: [
+                    {
+                        types: [
+                            {
+                                associationCategory: "HUBSPOT_DEFINED",
+                                associationTypeId: 190
+                            }
+                        ],
+                        to: {
+                            id: companyId
+                        }
+                    }
+                ],
+                properties: {
+                    "hs_timestamp": time:utcToString(time:utcNow()),
+                    "hs_note_body": "Hello World 2"
+                }
+            }
+        ]
+    };
+
+    BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors createResponse = check hubSpotNotes->/batch/create.post(createPayload);
+    SimplePublicObject[] createResults = createResponse.results;
+
+    // Read the notes
     BatchReadInputSimplePublicObjectId payload =
     {
         propertiesWithHistory: [],
         inputs: [
-            {id: batchReadNoteId1},
-            {id: batchReadNoteId2}
+            {id: createResults[0].id},
+            {id: createResults[1].id}
         ],
         properties: []
     };
@@ -170,17 +196,66 @@ isolated function testPost_search_doSearch() returns error? {
     enable: isLiveServer
 }
 isolated function testPost_batch_update_update() returns error? {
+    // Create a batch of notes in order to read them later
+    BatchInputSimplePublicObjectInputForCreate createPayload =
+    {
+        inputs: [
+            {
+                associations: [
+                    {
+                        types: [
+                            {
+                                associationCategory: "HUBSPOT_DEFINED",
+                                associationTypeId: 190
+                            }
+                        ],
+                        to: {
+                            id: companyId
+                        }
+                    }
+                ],
+                properties: {
+                    "hs_timestamp": time:utcToString(time:utcNow()),
+                    "hs_note_body": "Hello World 1"
+                }
+            },
+            {
+                associations: [
+                    {
+                        types: [
+                            {
+                                associationCategory: "HUBSPOT_DEFINED",
+                                associationTypeId: 190
+                            }
+                        ],
+                        to: {
+                            id: companyId
+                        }
+                    }
+                ],
+                properties: {
+                    "hs_timestamp": time:utcToString(time:utcNow()),
+                    "hs_note_body": "Hello World 2"
+                }
+            }
+        ]
+    };
+
+    BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors createResponse = check hubSpotNotes->/batch/create.post(createPayload);
+    SimplePublicObject[] createResults = createResponse.results;
+
+    // Update the notes
     BatchInputSimplePublicObjectBatchInput payload =
     {
         inputs: [
             {
-                id: batchUpdateNoteId1,
+                id: createResults[0].id,
                 properties: {
                     "hs_note_body": "Greetings 1"
                 }
             },
             {
-                id: batchUpdateNoteId2,
+                id: createResults[1].id,
                 properties: {
                     "hs_note_body": "Greetings 2"
                 }
@@ -192,7 +267,7 @@ isolated function testPost_batch_update_update() returns error? {
 
     SimplePublicObject[] results = response.results;
     foreach SimplePublicObject result in results {
-        test:assertTrue(result.id == batchUpdateNoteId1 || result.id == batchUpdateNoteId2);
+        test:assertTrue(result.id == createResults[0].id || result.id == createResults[1].id);
     }
 }
 
@@ -254,11 +329,60 @@ isolated function testPost_batch_create_create() returns error? {
     enable: isLiveServer
 }
 isolated function testPost_batch_archive_archive() returns error? {
+    // Create a batch of notes in order to read them later
+    BatchInputSimplePublicObjectInputForCreate createPayload =
+    {
+        inputs: [
+            {
+                associations: [
+                    {
+                        types: [
+                            {
+                                associationCategory: "HUBSPOT_DEFINED",
+                                associationTypeId: 190
+                            }
+                        ],
+                        to: {
+                            id: companyId
+                        }
+                    }
+                ],
+                properties: {
+                    "hs_timestamp": time:utcToString(time:utcNow()),
+                    "hs_note_body": "Hello World 1"
+                }
+            },
+            {
+                associations: [
+                    {
+                        types: [
+                            {
+                                associationCategory: "HUBSPOT_DEFINED",
+                                associationTypeId: 190
+                            }
+                        ],
+                        to: {
+                            id: companyId
+                        }
+                    }
+                ],
+                properties: {
+                    "hs_timestamp": time:utcToString(time:utcNow()),
+                    "hs_note_body": "Hello World 2"
+                }
+            }
+        ]
+    };
+
+    BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors createResponse = check hubSpotNotes->/batch/create.post(createPayload);
+    SimplePublicObject[] createResults = createResponse.results;
+
+    // Delete the notes
     BatchInputSimplePublicObjectId payload =
     {
         inputs: [
-            {id: batchDeleteNoteId1},
-            {id: batchDeleteNoteId2}
+            {id: createResults[0].id},
+            {id: createResults[1].id}
         ]
     };
 
@@ -271,7 +395,32 @@ isolated function testPost_batch_archive_archive() returns error? {
     enable: isLiveServer
 }
 isolated function testGet_getById() returns error? {
-    SimplePublicObjectWithAssociations response = check hubSpotNotes->/[getByIdNoteId]();
+    // Create a note in order to get it later
+    SimplePublicObjectInputForCreate createPayload =
+    {
+        associations: [
+            {
+                types: [
+                    {
+                        associationCategory: "HUBSPOT_DEFINED",
+                        associationTypeId: 190
+                    }
+                ],
+                to: {
+                    id: companyId
+                }
+            }
+        ],
+        properties: {
+            "hs_timestamp": time:utcToString(time:utcNow()),
+            "hs_note_body": "Hello"
+        }
+    };
+
+    SimplePublicObject createResponse = check hubSpotNotes->/.post(createPayload);
+
+    // Delete the note
+    SimplePublicObjectWithAssociations response = check hubSpotNotes->/[createResponse.id]();
     test:assertNotEquals(response.id, "");
 }
 
@@ -280,6 +429,31 @@ isolated function testGet_getById() returns error? {
     enable: isLiveServer
 }
 isolated function testPatch_update() returns error? {
+    // Create a note in order to get it later
+    SimplePublicObjectInputForCreate createPayload =
+    {
+        associations: [
+            {
+                types: [
+                    {
+                        associationCategory: "HUBSPOT_DEFINED",
+                        associationTypeId: 190
+                    }
+                ],
+                to: {
+                    id: companyId
+                }
+            }
+        ],
+        properties: {
+            "hs_timestamp": time:utcToString(time:utcNow()),
+            "hs_note_body": "Hello"
+        }
+    };
+
+    SimplePublicObject createResponse = check hubSpotNotes->/.post(createPayload);
+
+    // Update the note
     SimplePublicObjectInput payload =
     {
         properties: {
@@ -287,8 +461,8 @@ isolated function testPatch_update() returns error? {
         }
     };
 
-    SimplePublicObject response = check hubSpotNotes->/[updateNoteId].patch(payload);
-    test:assertEquals(response.id, updateNoteId);
+    SimplePublicObject response = check hubSpotNotes->/[createResponse.id].patch(payload);
+    test:assertEquals(response.id, createResponse.id);
 }
 
 @test:Config {
@@ -296,7 +470,32 @@ isolated function testPatch_update() returns error? {
     enable: isLiveServer
 }
 isolated function testDelete_archive() returns error? {
-    http:Response response = check hubSpotNotes->/[deleteNoteId].delete();
+    // Create a note in order to get it later
+    SimplePublicObjectInputForCreate createPayload =
+    {
+        associations: [
+            {
+                types: [
+                    {
+                        associationCategory: "HUBSPOT_DEFINED",
+                        associationTypeId: 190
+                    }
+                ],
+                to: {
+                    id: companyId
+                }
+            }
+        ],
+        properties: {
+            "hs_timestamp": time:utcToString(time:utcNow()),
+            "hs_note_body": "Hello"
+        }
+    };
+
+    SimplePublicObject createResponse = check hubSpotNotes->/.post(createPayload);
+
+    // Delete the note
+    http:Response response = check hubSpotNotes->/[createResponse.id].delete();
     test:assertEquals(response.statusCode, 204);
 }
 
