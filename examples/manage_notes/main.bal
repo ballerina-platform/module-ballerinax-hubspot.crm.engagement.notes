@@ -32,7 +32,7 @@ hsengnotes:OAuth2RefreshTokenGrantConfig auth = {
     clientId,
     clientSecret,
     refreshToken,
-    credentialBearer: oauth2:POST_BODY_BEARER // This line should be added when you are going to create auth object.
+    credentialBearer: oauth2:POST_BODY_BEARER
 };
 final hsengnotes:Client hubSpotNotes = check new ({auth});
 
