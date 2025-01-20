@@ -1,4 +1,4 @@
-# Ballerina Ballerina HubSpot CRM Engagement Notes Connector connector
+# Ballerina HubSpot CRM Engagement Notes Connector
 
 [![Build](https://github.com/ballerina-platform/module-ballerinax-hubspot.crm.engagement.notes/actions/workflows/ci.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-hubspot.crm.engagement.notes/actions/workflows/ci.yml)
 [![Trivy](https://github.com/ballerina-platform/module-ballerinax-hubspot.crm.engagement.notes/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-hubspot.crm.engagement.notes/actions/workflows/trivy-scan.yml)
