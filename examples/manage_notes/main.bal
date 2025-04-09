@@ -110,7 +110,7 @@ public function main() returns error? {
     // Delete note
     io:println("Deleting note...");
 
-    http:Response _ = check hubSpotNotes->/[noteId].delete();
+    anydata _ = check hubSpotNotes->/[noteId].delete();
 
     // Getting all available notes
     io:println("All notes: ");

@@ -14,7 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/http;
 import ballerina/oauth2;
 import ballerina/os;
 import ballerina/test;
@@ -386,8 +385,8 @@ isolated function testPost_batch_archive_archive() returns error? {
         ]
     };
 
-    http:Response response = check hubSpotNotes->/batch/archive.post(payload);
-    test:assertEquals(response.statusCode, 204);
+    error? response = hubSpotNotes->/batch/archive.post(payload);
+    test:assertEquals(response, ());
 }
 
 @test:Config {
@@ -495,8 +494,8 @@ isolated function testDelete_archive() returns error? {
     SimplePublicObject createResponse = check hubSpotNotes->/.post(createPayload);
 
     // Delete the note
-    http:Response response = check hubSpotNotes->/[createResponse.id].delete();
-    test:assertEquals(response.statusCode, 204);
+    error? response = hubSpotNotes->/[createResponse.id].delete();
+    test:assertEquals(response, ());
 }
 
 @test:Config {

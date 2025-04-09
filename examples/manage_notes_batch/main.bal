@@ -139,5 +139,5 @@ public function main() returns error? {
         ]
     };
 
-    http:Response _ = check hubSpotNotes->/batch/archive.post(deletePayload);
+    anydata _ = check hubSpotNotes->/batch/archive.post(deletePayload);
 }
