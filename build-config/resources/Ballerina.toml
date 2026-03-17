@@ -5,7 +5,7 @@ name = "hubspot.crm.engagement.notes"
 version = "@toml.version@"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["engagement", "notes", "Vendor/HubSpot", "Area/CRM", "Type/Connector"]
+keywords = ["engagement", "notes", "Vendor/HubSpot", "Area/CRM & Sales", "Type/Connector"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-hubspot.crm.engagement.notes"
 
 [build-options]
