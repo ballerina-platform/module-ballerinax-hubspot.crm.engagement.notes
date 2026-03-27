@@ -2,11 +2,12 @@
 distribution = "2201.12.0"
 org = "ballerinax"
 name = "hubspot.crm.engagement.notes"
-version = "2.0.0"
+version = "2.0.1"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["engagement", "notes", "Vendor/HubSpot", "Area/CRM", "Type/Connector"]
+keywords = ["engagement", "notes", "Vendor/HubSpot", "Area/CRM & Sales", "Type/Connector"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-hubspot.crm.engagement.notes"
+icon = "icon.png"
 
 [build-options]
 observabilityIncluded = true
