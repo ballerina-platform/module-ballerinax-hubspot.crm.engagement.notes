@@ -2,7 +2,7 @@
 
 [HubSpot](https://www.hubspot.com/) is an AI-powered customer relationship management (CRM) platform.
 
-The HubSpot connector offers APIs to connect and interact with the [Hubspot Engagement Notes API](https://developers.hubspot.com/docs/reference/api/crm/engagements/notes) endpoints, specifically based on the [HubSpot REST API](https://developers.hubspot.com/docs/reference/api/overview).
+The HubSpot connector offers APIs to connect and interact with the [HubSpot Engagement Notes API](https://developers.hubspot.com/docs/reference/api/crm/engagements/notes) endpoints, specifically based on the [HubSpot REST API](https://developers.hubspot.com/docs/reference/api/overview).
 
 ### Key Features
 
