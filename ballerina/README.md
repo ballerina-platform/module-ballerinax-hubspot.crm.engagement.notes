@@ -2,7 +2,7 @@
 
 [HubSpot](https://www.hubspot.com/) is an AI-powered customer relationship management (CRM) platform.
 
-The HubSpot connector offers APIs to connect and interact with the [Hubspot Engagement Notes API](https://developers.hubspot.com/docs/reference/api/crm/engagements/notes) endpoints, specifically based on the [HubSpot REST API](https://developers.hubspot.com/docs/reference/api/overview).
+The HubSpot connector offers APIs to connect and interact with the [HubSpot Engagement Notes API](https://developers.hubspot.com/docs/reference/api/crm/engagements/notes) endpoints, specifically based on the [HubSpot REST API](https://developers.hubspot.com/docs/reference/api/overview).
 
 ### Key Features
 
@@ -183,7 +183,7 @@ bal run
 
 ## Examples
 
-The `Ballerina HubSpot CRM Engagement Notes Connector` connector provides practical examples illustrating usage in various scenarios. Explore these [examples](https://github.com/module-ballerinax-hubspot.crm.engagement.notes/tree/main/examples/), covering the following use cases:
+The `Ballerina HubSpot CRM Engagement Notes Connector` connector provides practical examples illustrating usage in various scenarios. Explore these [examples](https://github.com/ballerina-platform/module-ballerinax-hubspot.crm.engagement.notes/tree/main/examples/), covering the following use cases:
 
 1. [Managing a single note](https://github.com/ballerina-platform/module-ballerinax-hubspot.crm.engagement.notes/tree/main/examples/manage_notes) - Operations on a single note such as creating, updating and deleting, as well as getting a list of available notes and searching for a note by its content.
 
