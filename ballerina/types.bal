@@ -19,24 +19,39 @@
 
 import ballerina/http;
 
+# Standard error response structure returned by the API.
 public type StandardError record {
+    # Optional sub-category providing additional error classification.
     record {} subCategory?;
+    # Contextual metadata map with string array values for the error.
     record {|string[]...;|} context;
+    # Map of relevant links associated with the error response.
     record {|string...;|} links;
+    # Unique identifier for the error instance.
     string id?;
+    # High-level category classifying the type of error.
     string category;
+    # Human-readable message describing the error.
     string message;
+    # List of detailed error entries associated with this error.
     ErrorDetail[] errors;
+    # HTTP status code or status label for the error response.
     string status;
 };
 
+# Paginated collection of associated object IDs.
 public type CollectionResponseAssociatedId record {
+    # Contains cursors for navigating to the next or previous page of results.
     Paging paging?;
+    # Array of associated IDs returned in the response.
     AssociatedId[] results;
 };
 
+# Defines association targets and types for a given object.
 public type PublicAssociationsForObject record {
+    # List of association type specifications for the object.
     AssociationSpec[] types;
+    # Represents a public object identified by a unique string ID.
     PublicObjectId to;
 };
 
@@ -46,12 +61,19 @@ public type PostCrmV3ObjectsNotesBatchReadReadQueries record {
     boolean archived = false;
 };
 
+# Batch operation response containing results and status for notes.
 public type BatchResponseSimplePublicObject record {
+    # Timestamp indicating when the batch operation completed.
     string completedAt;
+    # Timestamp indicating when the batch operation was requested.
     string requestedAt?;
+    # Timestamp indicating when the batch operation started.
     string startedAt;
+    # Map of supplementary links related to the batch response.
     record {|string...;|} links?;
+    # Array of note objects returned by the batch operation.
     SimplePublicObject[] results;
+    # Current processing status of the batch operation.
     "PENDING"|"PROCESSING"|"CANCELED"|"COMPLETE" status;
 };
 
@@ -71,10 +93,13 @@ public type GetCrmV3ObjectsNotesGetPageQueries record {
     string[] properties?;
 };
 
+# A group of filters combined to refine search query results.
 public type FilterGroup record {
+    # Array of filter conditions applied within this group.
     Filter[] filters;
 };
 
+# Detailed information about a specific error encountered in a request.
 public type ErrorDetail record {
     # A specific category that contains more specific detail about the error
     string subCategory?;
@@ -88,11 +113,15 @@ public type ErrorDetail record {
     string message;
 };
 
+# Pagination object containing a reference to the next results page.
 public type ForwardPaging record {
+    # Pagination details for retrieving the next page of results.
     NextPage next?;
 };
 
+# An object representing a unique identifier for a public object.
 public type SimplePublicObjectId record {
+    # The unique identifier of the object.
     string id;
 };
 
@@ -110,43 +139,73 @@ public type GetCrmV3ObjectsNotesNoteIdGetByIdQueries record {
     string[] properties?;
 };
 
+# Batch upsert response containing results, errors, and processing status.
 public type BatchResponseSimplePublicUpsertObjectWithErrors record {
+    # Timestamp when the batch operation completed.
     string completedAt;
+    # Total number of errors encountered during the batch operation.
     int:Signed32 numErrors?;
+    # Timestamp when the batch operation was requested.
     string requestedAt?;
+    # Timestamp when the batch operation began processing.
     string startedAt;
+    # Map of relevant links associated with the batch response.
     record {|string...;|} links?;
+    # Array of upserted note objects returned by the batch operation.
     SimplePublicUpsertObject[] results;
+    # Array of errors encountered for individual records in the batch.
     StandardError[] errors?;
+    # Current processing status of the batch upsert operation.
     "PENDING"|"PROCESSING"|"CANCELED"|"COMPLETE" status;
 };
 
+# Input schema for reading a batch of notes by their object IDs.
 public type BatchReadInputSimplePublicObjectId record {
+    # List of properties to return along with their historical values.
     string[] propertiesWithHistory;
+    # The property to use as the unique identifier for lookup.
     string idProperty?;
+    # Array of object IDs to retrieve in the batch read.
     SimplePublicObjectId[] inputs;
+    # List of property names to include in the response.
     string[] properties;
 };
 
+# Response object containing the status and results of a batch upsert operation.
 public type BatchResponseSimplePublicUpsertObject record {
+    # Timestamp when the batch operation completed.
     string completedAt;
+    # Timestamp when the batch operation was requested.
     string requestedAt?;
+    # Timestamp when the batch operation started processing.
     string startedAt;
+    # Map of relevant links associated with the batch response.
     record {|string...;|} links?;
+    # Array of upserted objects returned by the batch operation.
     SimplePublicUpsertObject[] results;
+    # Current processing status of the batch operation.
     "PENDING"|"PROCESSING"|"CANCELED"|"COMPLETE" status;
 };
 
+# A property value paired with its source metadata and timestamp.
 public type ValueWithTimestamp record {
+    # Identifier of the source that set this value.
     string sourceId?;
+    # The type of source that provided this value.
     string sourceType;
+    # Human-readable label describing the value's source.
     string sourceLabel?;
+    # ID of the user who last updated this value.
     int:Signed32 updatedByUserId?;
+    # The property value as a string.
     string value;
+    # Timestamp when this value was recorded or last updated.
     string timestamp;
 };
 
+# Input schema containing a list of object IDs for a batch operation.
 public type BatchInputSimplePublicObjectId record {
+    # Array of object IDs to process in the batch request.
     SimplePublicObjectId[] inputs;
 };
 
@@ -163,23 +222,37 @@ public type OAuth2RefreshTokenGrantConfig record {|
     string refreshUrl = "https://api.hubapi.com/oauth/v1/token";
 |};
 
+# Input schema containing a list of objects to upsert in a batch operation.
 public type BatchInputSimplePublicObjectBatchInputUpsert record {
+    # Array of note objects to upsert in batch.
     SimplePublicObjectBatchInputUpsert[] inputs;
 };
 
+# A paginated collection of note objects with a total count and forward paging cursor.
 public type CollectionResponseWithTotalSimplePublicObjectForwardPaging record {
+    # Total number of notes matching the request.
     int:Signed32 total;
+    # Pagination object containing a reference to the next results page.
     ForwardPaging paging?;
+    # Array of note objects returned in the current page.
     SimplePublicObject[] results;
 };
 
+# Represents a single note object with its properties, timestamps, and archival state.
 public type SimplePublicObject record {
+    # Timestamp when the note was created.
     string createdAt;
+    # Indicates whether the note is archived.
     boolean archived?;
+    # Timestamp when the note was archived.
     string archivedAt?;
+    # Map of property names to their historical values with timestamps.
     record {|ValueWithTimestamp[]...;|} propertiesWithHistory?;
+    # Unique identifier of the note object.
     string id;
+    # Map of note property names to their current values.
     record {|string?...;|} properties;
+    # Timestamp when the note was last updated.
     string updatedAt;
 };
 
@@ -227,115 +300,191 @@ public type ConnectionConfig record {|
     boolean laxDataBinding = true;
 |};
 
+# Represents a public object identified by a unique string ID.
 public type PublicObjectId record {
+    # Unique identifier of the public object.
     string id;
 };
 
+# Contains cursors for navigating to the next or previous page of results.
 public type Paging record {
+    # Pagination details for retrieving the next page of results.
     NextPage next?;
+    # Pagination details for navigating to the previous page of results.
     PreviousPage prev?;
 };
 
+# Defines search criteria including query text, filters, sorting, and pagination for notes.
 public type PublicObjectSearchRequest record {
+    # Full-text search query string to filter notes.
     string query?;
+    # Maximum number of results to return per page.
     int:Signed32 'limit?;
+    # Cursor token for retrieving the next page of results.
     string after?;
+    # List of sort criteria to order the search results.
     string[] sorts?;
+    # List of note properties to include in the response.
     string[] properties?;
+    # Groups of filters used to narrow search results.
     FilterGroup[] filterGroups?;
 };
 
+# Input payload for upserting a single note in a batch operation, containing the record identifier and its properties.
 public type SimplePublicObjectBatchInputUpsert record {
+    # The property name used as the unique identifier for the upsert.
     string idProperty?;
+    # Trace identifier for auditing the object write operation.
     string objectWriteTraceId?;
+    # The unique identifier of the note to create or update.
     string id;
+    # Key-value map of note property names and their values.
     record {|string...;|} properties;
 };
 
+# Batch operation response containing processed note results, status, timestamps, and any errors encountered during processing.
 public type BatchResponseSimplePublicObjectWithErrors record {
+    # Timestamp indicating when the batch operation completed.
     string completedAt;
+    # Total number of errors encountered during the batch operation.
     int:Signed32 numErrors?;
+    # Timestamp indicating when the batch operation was requested.
     string requestedAt?;
+    # Timestamp indicating when the batch operation began processing.
     string startedAt;
+    # Map of relevant link names to their associated URLs.
     record {|string...;|} links?;
+    # List of successfully processed note objects from the batch.
     SimplePublicObject[] results;
+    # List of errors for records that failed during the batch operation.
     StandardError[] errors?;
+    # Current status of the batch operation: PENDING, PROCESSING, CANCELED, or COMPLETE.
     "PENDING"|"PROCESSING"|"CANCELED"|"COMPLETE" status;
 };
 
+# Input payload for creating or updating a note object with its properties.
 public type SimplePublicObjectInput record {
+    # Trace identifier for tracking the write operation.
     string objectWriteTraceId?;
+    # Key-value map of note property names and their string values.
     record {|string...;|} properties;
 };
 
+# Paginated collection of note objects with their associated records.
 public type CollectionResponseSimplePublicObjectWithAssociationsForwardPaging record {
+    # Pagination object containing a reference to the next results page.
     ForwardPaging paging?;
+    # Array of note objects returned in the current page.
     SimplePublicObjectWithAssociations[] results;
 };
 
+# Defines the category and type of an association between objects.
 public type AssociationSpec record {
+    # Category of the association: HUBSPOT_DEFINED, USER_DEFINED, or INTEGRATOR_DEFINED.
     "HUBSPOT_DEFINED"|"USER_DEFINED"|"INTEGRATOR_DEFINED" associationCategory;
+    # Numeric identifier for the specific association type.
     int:Signed32 associationTypeId;
 };
 
+# A note object including its properties, metadata, and associated records.
 public type SimplePublicObjectWithAssociations record {
+    # Map of associated object types to their related record collections.
     record {|CollectionResponseAssociatedId...;|} associations?;
+    # Timestamp indicating when the note was created.
     string createdAt;
+    # Indicates whether the note has been archived.
     boolean archived?;
+    # Timestamp indicating when the note was archived.
     string archivedAt?;
+    # Map of property names to their historical values with timestamps.
     record {|ValueWithTimestamp[]...;|} propertiesWithHistory?;
+    # Unique identifier of the note object.
     string id;
+    # Key-value map of the note's current property names and values.
     record {|string?...;|} properties;
+    # Timestamp indicating when the note was last updated.
     string updatedAt;
 };
 
+# Defines a filter condition using a property, operator, and comparison value.
 public type Filter record {
+    # Upper bound value for BETWEEN range filter operations.
     string highValue?;
+    # The name of the property to filter by.
     string propertyName;
+    # A list of values to match against the filter property.
     string[] values?;
+    # A single value to match against the filter property.
     string value?;
-    # null
+    # The comparison operator used to evaluate the filter condition against the property value.
     "EQ"|"NEQ"|"LT"|"LTE"|"GT"|"GTE"|"BETWEEN"|"IN"|"NOT_IN"|"HAS_PROPERTY"|"NOT_HAS_PROPERTY"|"CONTAINS_TOKEN"|"NOT_CONTAINS_TOKEN" operator;
 };
 
+# Pagination details for navigating to the previous page of results.
 public type PreviousPage record {
+    # The cursor token representing the start of the previous page.
     string before;
+    # The URL link to the previous page of results.
     string link?;
 };
 
+# A batch input object containing an array of note creation inputs.
 public type BatchInputSimplePublicObjectInputForCreate record {
+    # An array of note creation input objects to process in batch.
     SimplePublicObjectInputForCreate[] inputs;
 };
 
+# A batch input object containing an array of note update inputs.
 public type BatchInputSimplePublicObjectBatchInput record {
+    # An array of note update input objects to process in batch.
     SimplePublicObjectBatchInput[] inputs;
 };
 
+# Represents a note returned after an upsert operation, including creation and update metadata.
 public type SimplePublicUpsertObject record {
+    # The timestamp when the note was created.
     string createdAt;
+    # Indicates whether the note is archived.
     boolean archived?;
+    # The timestamp when the note was archived.
     string archivedAt?;
+    # Indicates whether the note was newly created by the upsert.
     boolean 'new;
+    # A map of property names to their historical values with timestamps.
     record {|ValueWithTimestamp[]...;|} propertiesWithHistory?;
+    # The unique identifier of the note.
     string id;
+    # A map of the note's property names to their current values.
     record {|string...;|} properties;
+    # The timestamp when the note was last updated.
     string updatedAt;
 };
 
+# Input object for updating an existing note in a batch operation, identified by ID.
 public type SimplePublicObjectBatchInput record {
+    # The name of a unique property to use as the record identifier.
     string idProperty?;
+    # A trace ID for tracking the write operation on this object.
     string objectWriteTraceId?;
+    # The unique identifier of the record to update.
     string id;
+    # Key-value pairs of properties to set on the record.
     record {|string...;|} properties;
 };
 
+# Pagination details for retrieving the next page of results.
 public type NextPage record {
+    # The URL query string to fetch the next page of results.
     string link?;
+    # The cursor token used to retrieve the next page of results.
     string after;
 };
 
+# Represents an associated object with its ID and association type.
 public type AssociatedId record {
+    # The unique identifier of the associated object.
     string id;
+    # The type of association between the objects.
     string 'type;
 };
 
@@ -345,8 +494,12 @@ public type ApiKeysConfig record {|
     string privateApp;
 |};
 
+# Input payload for creating a new note, including properties and associations.
 public type SimplePublicObjectInputForCreate record {
+    # A list of associations linking this note to other CRM objects.
     PublicAssociationsForObject[] associations;
+    # A trace ID for tracking the write operation on this object.
     string objectWriteTraceId?;
+    # Key-value pairs of property values to set on the new note.
     record {|string...;|} properties;
 };

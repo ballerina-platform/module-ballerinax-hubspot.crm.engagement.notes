@@ -39,7 +39,7 @@ public isolated client class Client {
         self.clientEp = check new (serviceUrl, httpClientConfig);
     }
 
-    # Read a batch of notes by internal ID, or unique property values
+    # Read a batch of notes
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
@@ -58,8 +58,9 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, httpHeaders);
     }
 
-    # Read
+    # Retrieve a note by ID
     #
+    # + noteId - The unique identifier of the note to retrieve.
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
     # + return - successful operation 
@@ -75,8 +76,9 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, httpHeaders);
     }
 
-    # Archive
+    # Archive a note by ID
     #
+    # + noteId - The unique identifier of the note to archive.
     # + headers - Headers to be sent with the request 
     # + return - No content 
     resource isolated function delete [string noteId](map<string|string[]> headers = {}) returns error? {
@@ -89,8 +91,9 @@ public isolated client class Client {
         return self.clientEp->delete(resourcePath, headers = httpHeaders);
     }
 
-    # Update
+    # Partially update a note
     #
+    # + noteId - The unique identifier of the note to update.
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
     # + return - successful operation 
@@ -142,7 +145,7 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, httpHeaders);
     }
 
-    # Update a batch of notes by internal ID, or unique property values
+    # Update a batch of notes
     #
     # + headers - Headers to be sent with the request 
     # + return - successful operation 
@@ -159,7 +162,7 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, httpHeaders);
     }
 
-    # List
+    # Retrieve a page of notes
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
@@ -176,7 +179,7 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, httpHeaders);
     }
 
-    # Create
+    # Create a new note
     #
     # + headers - Headers to be sent with the request 
     # + return - successful operation 
@@ -193,7 +196,7 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, httpHeaders);
     }
 
-    # Create or update a batch of notes by unique property values
+    # Upsert a batch of notes
     #
     # + headers - Headers to be sent with the request 
     # + return - successful operation 
@@ -210,6 +213,8 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, httpHeaders);
     }
 
+    # Search for notes
+    #
     # + headers - Headers to be sent with the request 
     # + return - successful operation 
     resource isolated function post search(PublicObjectSearchRequest payload, map<string|string[]> headers = {}) returns CollectionResponseWithTotalSimplePublicObjectForwardPaging|error {

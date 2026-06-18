@@ -1,6 +1,6 @@
 _Author_:  @linukaratnayake \
 _Created_: 03.01.2025 \
-_Updated_: 04.01.2025 \
+_Updated_: 2026/06/17 \\
 _Edition_: Swan Lake
 
 # Sanitation for OpenAPI specification
@@ -21,7 +21,6 @@ These changes are done in order to improve the overall usability, and as workaro
         - **Original**: `/crm/v3/objects/notes/batch/read`
         - **Updated**: `/batch/read`
     - **Reason**: This modification simplifies the API paths, making them shorter and more readable.
-
 
 ## OpenAPI cli command
 

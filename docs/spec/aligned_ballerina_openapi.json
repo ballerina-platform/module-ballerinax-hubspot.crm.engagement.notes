@@ -1,0 +1,2100 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Notes",
+        "description": "",
+        "version": "v3",
+        "x-hubspot-product-tier-requirements": {
+            "marketing": "FREE",
+            "sales": "FREE",
+            "service": "FREE",
+            "cms": "FREE"
+        },
+        "x-hubspot-documentation-banner": "NONE",
+        "x-hubspot-api-use-case": "If you had an offline conversation with a customer, you could add a note to their contact record with the important takeaways from your conversation.",
+        "x-hubspot-related-documentation": [
+            {
+                "name": "Notes Guide",
+                "url": "https://developers.hubspot.com/beta-docs/guides/api/crm/engagements/notes"
+            }
+        ],
+        "x-hubspot-introduction": "Use the notes engagements API to include contextual information or associate an attachment with a CRM record. Other users in your HubSpot account will then be able to review the note and any attachments."
+    },
+    "servers": [
+        {
+            "url": "https://api.hubapi.com/crm/v3/objects/notes"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Batch"
+        },
+        {
+            "name": "Basic"
+        },
+        {
+            "name": "Search"
+        }
+    ],
+    "paths": {
+        "/batch/read": {
+            "post": {
+                "tags": [
+                    "Batch"
+                ],
+                "summary": "Read a batch of notes",
+                "operationId": "post-/crm/v3/objects/notes/batch/read_read",
+                "parameters": [
+                    {
+                        "name": "archived",
+                        "in": "query",
+                        "description": "Whether to return only results that have been archived",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BatchReadInputSimplePublicObjectId"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BatchResponseSimplePublicObject"
+                                }
+                            }
+                        }
+                    },
+                    "207": {
+                        "description": "multiple statuses",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BatchResponseSimplePublicObjectWithErrors"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Error"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "crm.objects.contacts.read"
+                        ]
+                    },
+                    {
+                        "private_apps": [
+                            "crm.objects.contacts.read"
+                        ]
+                    }
+                ],
+                "description": "Returns a batch of notes matched by internal IDs or unique property values, with partial success details on status 207."
+            }
+        },
+        "/{noteId}": {
+            "get": {
+                "tags": [
+                    "Basic"
+                ],
+                "summary": "Retrieve a note by ID",
+                "description": "Read an Object identified by `{noteId}`. `{noteId}` refers to the internal object ID by default, or optionally any unique property value as specified by the `idProperty` query param.  Control what is returned via the `properties` query param.",
+                "operationId": "get-/crm/v3/objects/notes/{noteId}_getById",
+                "parameters": [
+                    {
+                        "name": "noteId",
+                        "in": "path",
+                        "required": true,
+                        "style": "simple",
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the note to retrieve."
+                    },
+                    {
+                        "name": "properties",
+                        "in": "query",
+                        "description": "A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "propertiesWithHistory",
+                        "in": "query",
+                        "description": "A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "associations",
+                        "in": "query",
+                        "description": "A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "archived",
+                        "in": "query",
+                        "description": "Whether to return only results that have been archived",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    {
+                        "name": "idProperty",
+                        "in": "query",
+                        "description": "The name of a property whose values are unique for this object type",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimplePublicObjectWithAssociations"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Error"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "crm.objects.contacts.read"
+                        ]
+                    },
+                    {
+                        "private_apps": [
+                            "crm.objects.contacts.read"
+                        ]
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Basic"
+                ],
+                "summary": "Archive a note by ID",
+                "description": "Move an Object identified by `{noteId}` to the recycling bin.",
+                "operationId": "delete-/crm/v3/objects/notes/{noteId}_archive",
+                "parameters": [
+                    {
+                        "name": "noteId",
+                        "in": "path",
+                        "required": true,
+                        "style": "simple",
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the note to archive."
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content",
+                        "content": {}
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Error"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "crm.objects.contacts.write"
+                        ]
+                    },
+                    {
+                        "private_apps": [
+                            "crm.objects.contacts.write"
+                        ]
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Basic"
+                ],
+                "summary": "Partially update a note",
+                "description": "Perform a partial update of an Object identified by `{noteId}`. `{noteId}` refers to the internal object ID by default, or optionally any unique property value as specified by the `idProperty` query param. Provided property values will be overwritten. Read-only and non-existent properties will be ignored. Properties values can be cleared by passing an empty string.",
+                "operationId": "patch-/crm/v3/objects/notes/{noteId}_update",
+                "parameters": [
+                    {
+                        "name": "noteId",
+                        "in": "path",
+                        "required": true,
+                        "style": "simple",
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the note to update."
+                    },
+                    {
+                        "name": "idProperty",
+                        "in": "query",
+                        "description": "The name of a property whose values are unique for this object type",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SimplePublicObjectInput"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimplePublicObject"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Error"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "crm.objects.contacts.write"
+                        ]
+                    },
+                    {
+                        "private_apps": [
+                            "crm.objects.contacts.write"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/batch/archive": {
+            "post": {
+                "tags": [
+                    "Batch"
+                ],
+                "summary": "Archive a batch of notes by ID",
+                "operationId": "post-/crm/v3/objects/notes/batch/archive_archive",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BatchInputSimplePublicObjectId"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "description": "No content",
+                        "content": {}
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Error"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "crm.objects.contacts.write"
+                        ]
+                    },
+                    {
+                        "private_apps": [
+                            "crm.objects.contacts.write"
+                        ]
+                    }
+                ],
+                "description": "Returns no content on success, confirming the specified notes have been archived."
+            }
+        },
+        "/batch/create": {
+            "post": {
+                "tags": [
+                    "Batch"
+                ],
+                "summary": "Create a batch of notes",
+                "operationId": "post-/crm/v3/objects/notes/batch/create_create",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BatchInputSimplePublicObjectInputForCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BatchResponseSimplePublicObject"
+                                }
+                            }
+                        }
+                    },
+                    "207": {
+                        "description": "multiple statuses",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BatchResponseSimplePublicObjectWithErrors"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Error"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "crm.objects.contacts.write"
+                        ]
+                    },
+                    {
+                        "private_apps": [
+                            "crm.objects.contacts.write"
+                        ]
+                    }
+                ],
+                "description": "Returns the created notes, with partial success details included when status 207 is returned."
+            }
+        },
+        "/batch/update": {
+            "post": {
+                "tags": [
+                    "Batch"
+                ],
+                "summary": "Update a batch of notes",
+                "operationId": "post-/crm/v3/objects/notes/batch/update_update",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BatchInputSimplePublicObjectBatchInput"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BatchResponseSimplePublicObject"
+                                }
+                            }
+                        }
+                    },
+                    "207": {
+                        "description": "multiple statuses",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BatchResponseSimplePublicObjectWithErrors"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Error"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "crm.objects.contacts.write"
+                        ]
+                    },
+                    {
+                        "private_apps": [
+                            "crm.objects.contacts.write"
+                        ]
+                    }
+                ],
+                "description": "Returns the updated batch of notes, including partial success details when some updates fail."
+            }
+        },
+        "/": {
+            "get": {
+                "tags": [
+                    "Basic"
+                ],
+                "summary": "Retrieve a page of notes",
+                "description": "Read a page of notes. Control what is returned via the `properties` query param.",
+                "operationId": "get-/crm/v3/objects/notes_getPage",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum number of results to display per page",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "name": "after",
+                        "in": "query",
+                        "description": "The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "properties",
+                        "in": "query",
+                        "description": "A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "propertiesWithHistory",
+                        "in": "query",
+                        "description": "A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored. Usage of this parameter will reduce the maximum number of objects that can be read by a single request",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "associations",
+                        "in": "query",
+                        "description": "A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "archived",
+                        "in": "query",
+                        "description": "Whether to return only results that have been archived",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CollectionResponseSimplePublicObjectWithAssociationsForwardPaging"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Error"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "crm.objects.contacts.read"
+                        ]
+                    },
+                    {
+                        "private_apps": [
+                            "crm.objects.contacts.read"
+                        ]
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Basic"
+                ],
+                "summary": "Create a new note",
+                "description": "Create a note with the given properties and return a copy of the object, including the ID. Documentation and examples for creating standard notes is provided.",
+                "operationId": "post-/crm/v3/objects/notes_create",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SimplePublicObjectInputForCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimplePublicObject"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Error"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "crm.objects.contacts.write"
+                        ]
+                    },
+                    {
+                        "private_apps": [
+                            "crm.objects.contacts.write"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/batch/upsert": {
+            "post": {
+                "tags": [
+                    "Batch"
+                ],
+                "summary": "Upsert a batch of notes",
+                "description": "Create or update records identified by a unique property value as specified by the `idProperty` query param. `idProperty` query param refers to a property whose values are unique for the object.",
+                "operationId": "post-/crm/v3/objects/notes/batch/upsert_upsert",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BatchInputSimplePublicObjectBatchInputUpsert"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BatchResponseSimplePublicUpsertObject"
+                                }
+                            }
+                        }
+                    },
+                    "207": {
+                        "description": "multiple statuses",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BatchResponseSimplePublicUpsertObjectWithErrors"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Error"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "crm.objects.contacts.write"
+                        ]
+                    },
+                    {
+                        "private_apps": [
+                            "crm.objects.contacts.write"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/search": {
+            "post": {
+                "tags": [
+                    "Search"
+                ],
+                "operationId": "post-/crm/v3/objects/notes/search_doSearch",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PublicObjectSearchRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CollectionResponseWithTotalSimplePublicObjectForwardPaging"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Error"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "crm.objects.contacts.read"
+                        ]
+                    },
+                    {
+                        "private_apps": [
+                            "crm.objects.contacts.read"
+                        ]
+                    }
+                ],
+                "x-hubspot-rate-limit-exemptions": [
+                    "ten-secondly"
+                ],
+                "description": "Returns a paginated list of notes matching the specified search criteria and filters.",
+                "summary": "Search for notes"
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "StandardError": {
+                "required": [
+                    "category",
+                    "context",
+                    "errors",
+                    "links",
+                    "message",
+                    "status"
+                ],
+                "type": "object",
+                "properties": {
+                    "subCategory": {
+                        "type": "object",
+                        "properties": {},
+                        "description": "Optional sub-category providing additional error classification."
+                    },
+                    "context": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "Contextual metadata map with string array values for the error."
+                    },
+                    "links": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Map of relevant links associated with the error response."
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "Unique identifier for the error instance."
+                    },
+                    "category": {
+                        "type": "string",
+                        "description": "High-level category classifying the type of error."
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Human-readable message describing the error."
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ErrorDetail"
+                        },
+                        "description": "List of detailed error entries associated with this error."
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "HTTP status code or status label for the error response."
+                    }
+                },
+                "description": "Standard error response structure returned by the API."
+            },
+            "CollectionResponseAssociatedId": {
+                "required": [
+                    "results"
+                ],
+                "type": "object",
+                "properties": {
+                    "paging": {
+                        "$ref": "#/components/schemas/Paging",
+                        "description": "Paging metadata for navigating the result set."
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssociatedId"
+                        },
+                        "description": "Array of associated IDs returned in the response."
+                    }
+                },
+                "description": "Paginated collection of associated object IDs."
+            },
+            "PublicAssociationsForObject": {
+                "required": [
+                    "to",
+                    "types"
+                ],
+                "type": "object",
+                "properties": {
+                    "types": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssociationSpec"
+                        },
+                        "description": "List of association type specifications for the object."
+                    },
+                    "to": {
+                        "$ref": "#/components/schemas/PublicObjectId",
+                        "description": "The target object to associate with."
+                    }
+                },
+                "description": "Defines association targets and types for a given object."
+            },
+            "BatchResponseSimplePublicObject": {
+                "required": [
+                    "completedAt",
+                    "results",
+                    "startedAt",
+                    "status"
+                ],
+                "type": "object",
+                "properties": {
+                    "completedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp indicating when the batch operation completed."
+                    },
+                    "requestedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp indicating when the batch operation was requested."
+                    },
+                    "startedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp indicating when the batch operation started."
+                    },
+                    "links": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Map of supplementary links related to the batch response."
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimplePublicObject"
+                        },
+                        "description": "Array of note objects returned by the batch operation."
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "PENDING",
+                            "PROCESSING",
+                            "CANCELED",
+                            "COMPLETE"
+                        ],
+                        "description": "Current processing status of the batch operation."
+                    }
+                },
+                "description": "Batch operation response containing results and status for notes."
+            },
+            "FilterGroup": {
+                "required": [
+                    "filters"
+                ],
+                "type": "object",
+                "properties": {
+                    "filters": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Filter"
+                        },
+                        "description": "Array of filter conditions applied within this group."
+                    }
+                },
+                "description": "A group of filters combined to refine search query results."
+            },
+            "ErrorDetail": {
+                "required": [
+                    "message"
+                ],
+                "type": "object",
+                "properties": {
+                    "subCategory": {
+                        "type": "string",
+                        "description": "A specific category that contains more specific detail about the error"
+                    },
+                    "code": {
+                        "type": "string",
+                        "description": "The status code associated with the error detail"
+                    },
+                    "in": {
+                        "type": "string",
+                        "description": "The name of the field or parameter in which the error was found"
+                    },
+                    "context": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "Context about the error condition",
+                        "example": {
+                            "missingScopes": [
+                                "scope1",
+                                "scope2"
+                            ]
+                        }
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "A human readable message describing the error along with remediation steps where appropriate"
+                    }
+                },
+                "description": "Detailed information about a specific error encountered in a request."
+            },
+            "ForwardPaging": {
+                "type": "object",
+                "properties": {
+                    "next": {
+                        "$ref": "#/components/schemas/NextPage",
+                        "description": "Cursor reference to the next page of results."
+                    }
+                },
+                "description": "Pagination object containing a reference to the next results page."
+            },
+            "SimplePublicObjectId": {
+                "required": [
+                    "id"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The unique identifier of the object."
+                    }
+                },
+                "description": "An object representing a unique identifier for a public object."
+            },
+            "BatchResponseSimplePublicUpsertObjectWithErrors": {
+                "required": [
+                    "completedAt",
+                    "results",
+                    "startedAt",
+                    "status"
+                ],
+                "type": "object",
+                "properties": {
+                    "completedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the batch operation completed."
+                    },
+                    "numErrors": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Total number of errors encountered during the batch operation."
+                    },
+                    "requestedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the batch operation was requested."
+                    },
+                    "startedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the batch operation began processing."
+                    },
+                    "links": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Map of relevant links associated with the batch response."
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimplePublicUpsertObject"
+                        },
+                        "description": "Array of upserted note objects returned by the batch operation."
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/StandardError"
+                        },
+                        "description": "Array of errors encountered for individual records in the batch."
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "PENDING",
+                            "PROCESSING",
+                            "CANCELED",
+                            "COMPLETE"
+                        ],
+                        "description": "Current processing status of the batch upsert operation."
+                    }
+                },
+                "description": "Batch upsert response containing results, errors, and processing status."
+            },
+            "BatchReadInputSimplePublicObjectId": {
+                "required": [
+                    "inputs",
+                    "properties",
+                    "propertiesWithHistory"
+                ],
+                "type": "object",
+                "properties": {
+                    "propertiesWithHistory": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of properties to return along with their historical values."
+                    },
+                    "idProperty": {
+                        "type": "string",
+                        "description": "The property to use as the unique identifier for lookup."
+                    },
+                    "inputs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimplePublicObjectId"
+                        },
+                        "description": "Array of object IDs to retrieve in the batch read."
+                    },
+                    "properties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of property names to include in the response."
+                    }
+                },
+                "description": "Input schema for reading a batch of notes by their object IDs."
+            },
+            "BatchResponseSimplePublicUpsertObject": {
+                "required": [
+                    "completedAt",
+                    "results",
+                    "startedAt",
+                    "status"
+                ],
+                "type": "object",
+                "properties": {
+                    "completedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the batch operation completed."
+                    },
+                    "requestedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the batch operation was requested."
+                    },
+                    "startedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the batch operation started processing."
+                    },
+                    "links": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Map of relevant links associated with the batch response."
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimplePublicUpsertObject"
+                        },
+                        "description": "Array of upserted objects returned by the batch operation."
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "PENDING",
+                            "PROCESSING",
+                            "CANCELED",
+                            "COMPLETE"
+                        ],
+                        "description": "Current processing status of the batch operation."
+                    }
+                },
+                "description": "Response object containing the status and results of a batch upsert operation."
+            },
+            "BatchInputSimplePublicObjectId": {
+                "required": [
+                    "inputs"
+                ],
+                "type": "object",
+                "properties": {
+                    "inputs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimplePublicObjectId"
+                        },
+                        "description": "Array of object IDs to process in the batch request."
+                    }
+                },
+                "description": "Input schema containing a list of object IDs for a batch operation."
+            },
+            "ValueWithTimestamp": {
+                "required": [
+                    "sourceType",
+                    "timestamp",
+                    "value"
+                ],
+                "type": "object",
+                "properties": {
+                    "sourceId": {
+                        "type": "string",
+                        "description": "Identifier of the source that set this value."
+                    },
+                    "sourceType": {
+                        "type": "string",
+                        "description": "The type of source that provided this value."
+                    },
+                    "sourceLabel": {
+                        "type": "string",
+                        "description": "Human-readable label describing the value's source."
+                    },
+                    "updatedByUserId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "ID of the user who last updated this value."
+                    },
+                    "value": {
+                        "type": "string",
+                        "description": "The property value as a string."
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when this value was recorded or last updated."
+                    }
+                },
+                "description": "A property value paired with its source metadata and timestamp."
+            },
+            "BatchInputSimplePublicObjectBatchInputUpsert": {
+                "required": [
+                    "inputs"
+                ],
+                "type": "object",
+                "properties": {
+                    "inputs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimplePublicObjectBatchInputUpsert"
+                        },
+                        "description": "Array of note objects to upsert in batch."
+                    }
+                },
+                "description": "Input schema containing a list of objects to upsert in a batch operation."
+            },
+            "CollectionResponseWithTotalSimplePublicObjectForwardPaging": {
+                "required": [
+                    "results",
+                    "total"
+                ],
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Total number of notes matching the request."
+                    },
+                    "paging": {
+                        "$ref": "#/components/schemas/ForwardPaging",
+                        "description": "Forward paging cursor for retrieving the next result set."
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimplePublicObject"
+                        },
+                        "description": "Array of note objects returned in the current page."
+                    }
+                },
+                "description": "A paginated collection of note objects with a total count and forward paging cursor."
+            },
+            "SimplePublicObject": {
+                "required": [
+                    "createdAt",
+                    "id",
+                    "properties",
+                    "updatedAt"
+                ],
+                "type": "object",
+                "properties": {
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the note was created."
+                    },
+                    "archived": {
+                        "type": "boolean",
+                        "example": false,
+                        "description": "Indicates whether the note is archived."
+                    },
+                    "archivedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the note was archived."
+                    },
+                    "propertiesWithHistory": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/ValueWithTimestamp"
+                            }
+                        },
+                        "description": "Map of property names to their historical values with timestamps."
+                    },
+                    "id": {
+                        "type": "string",
+                        "example": "512",
+                        "description": "Unique identifier of the note object."
+                    },
+                    "properties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "example": {
+                            "property_date": "1572480000000",
+                            "property_radio": "option_1",
+                            "property_number": "17",
+                            "property_string": "value",
+                            "property_checkbox": "false",
+                            "property_dropdown": "choice_b",
+                            "property_multiple_checkboxes": "chocolate;strawberry"
+                        },
+                        "description": "Map of note property names to their current values."
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the note was last updated."
+                    }
+                },
+                "example": {
+                    "id": "512",
+                    "properties": {
+                        "createdate": "2019-10-30T03:30:17.883Z",
+                        "hs_lastmodifieddate": "2019-12-07T16:50:06.678Z",
+                        "hs_note_body": "Spoke with decision maker john",
+                        "hs_timestamp": "2019-10-30T03:30:17.883Z",
+                        "hubspot_owner_id": "11349275740"
+                    },
+                    "createdAt": "2019-10-30T03:30:17.883Z",
+                    "updatedAt": "2019-12-07T16:50:06.678Z",
+                    "archived": false
+                },
+                "description": "Represents a single note object with its properties, timestamps, and archival state."
+            },
+            "PublicObjectId": {
+                "required": [
+                    "id"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique identifier of the public object."
+                    }
+                },
+                "description": "Represents a public object identified by a unique string ID."
+            },
+            "Paging": {
+                "type": "object",
+                "properties": {
+                    "next": {
+                        "$ref": "#/components/schemas/NextPage",
+                        "description": "Cursor information for retrieving the next page."
+                    },
+                    "prev": {
+                        "$ref": "#/components/schemas/PreviousPage",
+                        "description": "Cursor information for retrieving the previous page."
+                    }
+                },
+                "description": "Contains cursors for navigating to the next or previous page of results."
+            },
+            "PublicObjectSearchRequest": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Full-text search query string to filter notes."
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Maximum number of results to return per page."
+                    },
+                    "after": {
+                        "type": "string",
+                        "description": "Cursor token for retrieving the next page of results."
+                    },
+                    "sorts": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of sort criteria to order the search results."
+                    },
+                    "properties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of note properties to include in the response."
+                    },
+                    "filterGroups": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FilterGroup"
+                        },
+                        "description": "Groups of filters used to narrow search results."
+                    }
+                },
+                "description": "Defines search criteria including query text, filters, sorting, and pagination for notes."
+            },
+            "Error": {
+                "required": [
+                    "category",
+                    "correlationId",
+                    "message"
+                ],
+                "type": "object",
+                "properties": {
+                    "subCategory": {
+                        "type": "string",
+                        "description": "A specific category that contains more specific detail about the error"
+                    },
+                    "context": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "Context about the error condition",
+                        "example": {
+                            "missingScopes": [
+                                "scope1",
+                                "scope2"
+                            ],
+                            "invalidPropertyName": [
+                                "propertyValue"
+                            ]
+                        }
+                    },
+                    "correlationId": {
+                        "type": "string",
+                        "description": "A unique identifier for the request. Include this value with any error reports or support tickets",
+                        "format": "uuid",
+                        "example": "aeb5f871-7f07-4993-9211-075dc63e7cbf"
+                    },
+                    "links": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "A map of link names to associated URIs containing documentation about the error or recommended remediation steps",
+                        "example": {
+                            "knowledge-base": "https://www.hubspot.com/products/service/knowledge-base"
+                        }
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "A human readable message describing the error along with remediation steps where appropriate",
+                        "example": "Invalid input (details will vary based on the error)"
+                    },
+                    "category": {
+                        "type": "string",
+                        "description": "The error category",
+                        "example": "VALIDATION_ERROR"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "description": "further information about the error",
+                        "items": {
+                            "$ref": "#/components/schemas/ErrorDetail"
+                        }
+                    }
+                },
+                "example": {
+                    "message": "Invalid input (details will vary based on the error)",
+                    "correlationId": "aeb5f871-7f07-4993-9211-075dc63e7cbf",
+                    "category": "VALIDATION_ERROR",
+                    "links": {
+                        "knowledge-base": "https://www.hubspot.com/products/service/knowledge-base"
+                    }
+                },
+                "description": "Represents an API error response, including a category, human-readable message, correlation ID for tracing, and optional context, sub-category, links, and error details."
+            },
+            "SimplePublicObjectBatchInputUpsert": {
+                "required": [
+                    "id",
+                    "properties"
+                ],
+                "type": "object",
+                "properties": {
+                    "idProperty": {
+                        "type": "string",
+                        "description": "The property name used as the unique identifier for the upsert."
+                    },
+                    "objectWriteTraceId": {
+                        "type": "string",
+                        "description": "Trace identifier for auditing the object write operation."
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The unique identifier of the note to create or update."
+                    },
+                    "properties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Key-value map of note property names and their values."
+                    }
+                },
+                "description": "Input payload for upserting a single note in a batch operation, containing the record identifier and its properties."
+            },
+            "BatchResponseSimplePublicObjectWithErrors": {
+                "required": [
+                    "completedAt",
+                    "results",
+                    "startedAt",
+                    "status"
+                ],
+                "type": "object",
+                "properties": {
+                    "completedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp indicating when the batch operation completed."
+                    },
+                    "numErrors": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Total number of errors encountered during the batch operation."
+                    },
+                    "requestedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp indicating when the batch operation was requested."
+                    },
+                    "startedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp indicating when the batch operation began processing."
+                    },
+                    "links": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Map of relevant link names to their associated URLs."
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimplePublicObject"
+                        },
+                        "description": "List of successfully processed note objects from the batch."
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/StandardError"
+                        },
+                        "description": "List of errors for records that failed during the batch operation."
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "PENDING",
+                            "PROCESSING",
+                            "CANCELED",
+                            "COMPLETE"
+                        ],
+                        "description": "Current status of the batch operation: PENDING, PROCESSING, CANCELED, or COMPLETE."
+                    }
+                },
+                "description": "Batch operation response containing processed note results, status, timestamps, and any errors encountered during processing."
+            },
+            "SimplePublicObjectInput": {
+                "required": [
+                    "properties"
+                ],
+                "type": "object",
+                "properties": {
+                    "objectWriteTraceId": {
+                        "type": "string",
+                        "description": "Trace identifier for tracking the write operation."
+                    },
+                    "properties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "example": {
+                            "property_date": "1572480000000",
+                            "property_radio": "option_1",
+                            "property_number": "17",
+                            "property_string": "value",
+                            "property_checkbox": "false",
+                            "property_dropdown": "choice_b",
+                            "property_multiple_checkboxes": "chocolate;strawberry"
+                        },
+                        "description": "Key-value map of note property names and their string values."
+                    }
+                },
+                "example": {
+                    "properties": {
+                        "hs_note_body": "Spoke with decision maker john",
+                        "hs_timestamp": "2019-10-30T03:30:17.883Z",
+                        "hubspot_owner_id": "11349275740"
+                    },
+                    "associations": [
+                        {
+                            "to": {
+                                "id": "101"
+                            },
+                            "types": [
+                                {
+                                    "associationCategory": "HUBSPOT_DEFINED",
+                                    "associationTypeId": 2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "Input payload for creating or updating a note object with its properties."
+            },
+            "CollectionResponseSimplePublicObjectWithAssociationsForwardPaging": {
+                "required": [
+                    "results"
+                ],
+                "type": "object",
+                "properties": {
+                    "paging": {
+                        "$ref": "#/components/schemas/ForwardPaging",
+                        "description": "Forward paging cursor for retrieving the next results page."
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimplePublicObjectWithAssociations"
+                        },
+                        "description": "Array of note objects returned in the current page."
+                    }
+                },
+                "description": "Paginated collection of note objects with their associated records."
+            },
+            "AssociationSpec": {
+                "required": [
+                    "associationCategory",
+                    "associationTypeId"
+                ],
+                "type": "object",
+                "properties": {
+                    "associationCategory": {
+                        "type": "string",
+                        "enum": [
+                            "HUBSPOT_DEFINED",
+                            "USER_DEFINED",
+                            "INTEGRATOR_DEFINED"
+                        ],
+                        "description": "Category of the association: HUBSPOT_DEFINED, USER_DEFINED, or INTEGRATOR_DEFINED."
+                    },
+                    "associationTypeId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Numeric identifier for the specific association type."
+                    }
+                },
+                "description": "Defines the category and type of an association between objects."
+            },
+            "SimplePublicObjectWithAssociations": {
+                "required": [
+                    "createdAt",
+                    "id",
+                    "properties",
+                    "updatedAt"
+                ],
+                "type": "object",
+                "properties": {
+                    "associations": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/CollectionResponseAssociatedId"
+                        },
+                        "description": "Map of associated object types to their related record collections."
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp indicating when the note was created."
+                    },
+                    "archived": {
+                        "type": "boolean",
+                        "description": "Indicates whether the note has been archived."
+                    },
+                    "archivedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp indicating when the note was archived."
+                    },
+                    "propertiesWithHistory": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/ValueWithTimestamp"
+                            }
+                        },
+                        "description": "Map of property names to their historical values with timestamps."
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "Unique identifier of the note object."
+                    },
+                    "properties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "description": "Key-value map of the note's current property names and values."
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp indicating when the note was last updated."
+                    }
+                },
+                "example": {
+                    "properties": {
+                        "createdate": "2019-10-30T03:30:17.883Z",
+                        "hs_lastmodifieddate": "2019-12-07T16:50:06.678Z",
+                        "hs_note_body": "Spoke with decision maker john",
+                        "hs_timestamp": "2019-10-30T03:30:17.883Z",
+                        "hubspot_owner_id": "11349275740"
+                    }
+                },
+                "description": "A note object including its properties, metadata, and associated records."
+            },
+            "Filter": {
+                "required": [
+                    "operator",
+                    "propertyName"
+                ],
+                "type": "object",
+                "properties": {
+                    "highValue": {
+                        "type": "string",
+                        "description": "Upper bound value for BETWEEN range filter operations."
+                    },
+                    "propertyName": {
+                        "type": "string",
+                        "description": "The name of the property to filter by."
+                    },
+                    "values": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "A list of values to match against the filter property."
+                    },
+                    "value": {
+                        "type": "string",
+                        "description": "A single value to match against the filter property."
+                    },
+                    "operator": {
+                        "type": "string",
+                        "description": "The comparison operator used to evaluate the filter condition against the property value.",
+                        "enum": [
+                            "EQ",
+                            "NEQ",
+                            "LT",
+                            "LTE",
+                            "GT",
+                            "GTE",
+                            "BETWEEN",
+                            "IN",
+                            "NOT_IN",
+                            "HAS_PROPERTY",
+                            "NOT_HAS_PROPERTY",
+                            "CONTAINS_TOKEN",
+                            "NOT_CONTAINS_TOKEN"
+                        ]
+                    }
+                },
+                "description": "Defines a filter condition using a property, operator, and comparison value."
+            },
+            "BatchInputSimplePublicObjectBatchInput": {
+                "required": [
+                    "inputs"
+                ],
+                "type": "object",
+                "properties": {
+                    "inputs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimplePublicObjectBatchInput"
+                        },
+                        "description": "An array of note update input objects to process in batch."
+                    }
+                },
+                "description": "A batch input object containing an array of note update inputs."
+            },
+            "BatchInputSimplePublicObjectInputForCreate": {
+                "required": [
+                    "inputs"
+                ],
+                "type": "object",
+                "properties": {
+                    "inputs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimplePublicObjectInputForCreate"
+                        },
+                        "description": "An array of note creation input objects to process in batch."
+                    }
+                },
+                "description": "A batch input object containing an array of note creation inputs."
+            },
+            "PreviousPage": {
+                "required": [
+                    "before"
+                ],
+                "type": "object",
+                "properties": {
+                    "before": {
+                        "type": "string",
+                        "description": "The cursor token representing the start of the previous page."
+                    },
+                    "link": {
+                        "type": "string",
+                        "description": "The URL link to the previous page of results."
+                    }
+                },
+                "description": "Pagination details for navigating to the previous page of results."
+            },
+            "SimplePublicUpsertObject": {
+                "required": [
+                    "createdAt",
+                    "id",
+                    "new",
+                    "properties",
+                    "updatedAt"
+                ],
+                "type": "object",
+                "properties": {
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The timestamp when the note was created."
+                    },
+                    "archived": {
+                        "type": "boolean",
+                        "description": "Indicates whether the note is archived."
+                    },
+                    "archivedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The timestamp when the note was archived."
+                    },
+                    "new": {
+                        "type": "boolean",
+                        "description": "Indicates whether the note was newly created by the upsert."
+                    },
+                    "propertiesWithHistory": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/ValueWithTimestamp"
+                            }
+                        },
+                        "description": "A map of property names to their historical values with timestamps."
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The unique identifier of the note."
+                    },
+                    "properties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "A map of the note's property names to their current values."
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The timestamp when the note was last updated."
+                    }
+                },
+                "description": "Represents a note returned after an upsert operation, including creation and update metadata."
+            },
+            "SimplePublicObjectBatchInput": {
+                "required": [
+                    "id",
+                    "properties"
+                ],
+                "type": "object",
+                "properties": {
+                    "idProperty": {
+                        "type": "string",
+                        "example": "my_unique_property_name",
+                        "description": "The name of a unique property to use as the record identifier."
+                    },
+                    "objectWriteTraceId": {
+                        "type": "string",
+                        "description": "A trace ID for tracking the write operation on this object."
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The unique identifier of the record to update."
+                    },
+                    "properties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Key-value pairs of properties to set on the record."
+                    }
+                },
+                "example": {
+                    "id": "1",
+                    "properties": {
+                        "hs_note_body": "Spoke with decision maker john",
+                        "hs_timestamp": "2019-10-30T03:30:17.883Z",
+                        "hubspot_owner_id": "11349275740"
+                    }
+                },
+                "description": "Input object for updating an existing note in a batch operation, identified by ID."
+            },
+            "AssociatedId": {
+                "required": [
+                    "id",
+                    "type"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The unique identifier of the associated object."
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "The type of association between the objects."
+                    }
+                },
+                "description": "Represents an associated object with its ID and association type."
+            },
+            "NextPage": {
+                "required": [
+                    "after"
+                ],
+                "type": "object",
+                "properties": {
+                    "link": {
+                        "type": "string",
+                        "example": "?after=NTI1Cg%3D%3D",
+                        "description": "The URL query string to fetch the next page of results."
+                    },
+                    "after": {
+                        "type": "string",
+                        "example": "NTI1Cg%3D%3D",
+                        "description": "The cursor token used to retrieve the next page of results."
+                    }
+                },
+                "example": {
+                    "after": "NTI1Cg%3D%3D",
+                    "link": "?after=NTI1Cg%3D%3D"
+                },
+                "description": "Pagination details for retrieving the next page of results."
+            },
+            "SimplePublicObjectInputForCreate": {
+                "required": [
+                    "associations",
+                    "properties"
+                ],
+                "type": "object",
+                "properties": {
+                    "associations": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PublicAssociationsForObject"
+                        },
+                        "description": "A list of associations linking this note to other CRM objects."
+                    },
+                    "objectWriteTraceId": {
+                        "type": "string",
+                        "description": "A trace ID for tracking the write operation on this object."
+                    },
+                    "properties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Key-value pairs of property values to set on the new note."
+                    }
+                },
+                "example": {
+                    "properties": {
+                        "hs_note_body": "Spoke with decision maker john",
+                        "hs_timestamp": "2019-10-30T03:30:17.883Z",
+                        "hubspot_owner_id": "11349275740"
+                    },
+                    "associations": [
+                        {
+                            "to": {
+                                "id": "101"
+                            },
+                            "types": [
+                                {
+                                    "associationCategory": "HUBSPOT_DEFINED",
+                                    "associationTypeId": 2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "Input payload for creating a new note, including properties and associations."
+            }
+        },
+        "responses": {
+            "Error": {
+                "description": "An error occurred.",
+                "content": {
+                    "*/*": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "oauth2_legacy": {
+                "type": "oauth2",
+                "flows": {
+                    "authorizationCode": {
+                        "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+                        "tokenUrl": "https://api.hubapi.com/oauth/v1/token",
+                        "scopes": {
+                            "crm.objects.goals.read": "Read goals",
+                            "tickets": "Read and write tickets",
+                            "crm.objects.custom.read": "View custom object records",
+                            "e-commerce": "e-commerce",
+                            "crm.objects.custom.write": "Change custom object records",
+                            "media_bridge.read": "Read media and media events"
+                        }
+                    }
+                }
+            },
+            "oauth2": {
+                "type": "oauth2",
+                "flows": {
+                    "authorizationCode": {
+                        "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+                        "tokenUrl": "https://api.hubapi.com/oauth/v1/token",
+                        "scopes": {
+                            "crm.objects.companies.write": " ",
+                            "crm.objects.contacts.write": " ",
+                            "crm.objects.users.write": "Write User CRM objects",
+                            "crm.objects.commercepayments.read": "Read the COMMERCE_PAYMENT object.",
+                            "crm.objects.leads.write": "Modify lead objects",
+                            "crm.objects.subscriptions.read": "Read Commerce Subscriptions",
+                            "crm.objects.carts.read": "Read carts",
+                            "crm.objects.orders.write": "Write orders",
+                            "crm.objects.quotes.read": "Quotes",
+                            "crm.objects.services.read": "Read services",
+                            "crm.objects.orders.read": "Read Orders",
+                            "crm.objects.contacts.read": " ",
+                            "crm.objects.listings.read": "Read listings",
+                            "crm.objects.carts.write": "Write cart",
+                            "crm.objects.courses.write": "Write courses",
+                            "crm.objects.quotes.write": "Quotes",
+                            "crm.objects.users.read": "Read User CRM objects",
+                            "crm.objects.companies.read": " ",
+                            "crm.objects.appointments.read": "Read appointments",
+                            "crm.objects.partner-clients.write": "Modify Partner Client CRM objects",
+                            "crm.objects.leads.read": "Read lead objects",
+                            "crm.objects.appointments.write": "Write appointments",
+                            "crm.objects.services.write": "Write services",
+                            "crm.objects.line_items.read": "Line Items",
+                            "crm.objects.courses.read": "Read courses",
+                            "crm.objects.deals.read": " ",
+                            "crm.objects.invoices.read": "Read invoices objects",
+                            "crm.objects.partner-clients.read": "View Partner Client CRM objects",
+                            "crm.objects.deals.write": " ",
+                            "crm.objects.line_items.write": "Line Items",
+                            "crm.objects.listings.write": "Write listings"
+                        }
+                    }
+                }
+            },
+            "private_apps_legacy": {
+                "type": "apiKey",
+                "name": "private-app-legacy",
+                "in": "header",
+                "x-ballerina-name": "privateAppLegacy"
+            },
+            "private_apps": {
+                "type": "apiKey",
+                "name": "private-app",
+                "in": "header",
+                "x-ballerina-name": "privateApp"
+            }
+        }
+    },
+    "x-hubspot-available-client-libraries": [
+        "PHP",
+        "Node",
+        "Ruby",
+        "Python"
+    ],
+    "x-hubspot-product-tier-requirements": {
+        "marketing": "FREE",
+        "sales": "FREE",
+        "service": "FREE",
+        "cms": "FREE"
+    },
+    "x-hubspot-documentation-banner": "NONE"
+}
