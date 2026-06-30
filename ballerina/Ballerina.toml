@@ -2,7 +2,7 @@
 distribution = "2201.12.0"
 org = "ballerinax"
 name = "hubspot.crm.engagement.notes"
-version = "2.0.1"
+version = "2.0.2"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
 keywords = ["engagement", "notes", "Vendor/HubSpot", "Area/CRM & Sales", "Type/Connector"]
