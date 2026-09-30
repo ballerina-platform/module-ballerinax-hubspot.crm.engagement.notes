@@ -57,8 +57,14 @@ allprojects {
 
 def moduleVersion = project.version.replace("-SNAPSHOT", "")
 
-task build {
-    dependsOn(':hubspot.crm.engagement.notes-ballerina:build')
+if (tasks.names.contains('build')) {
+    tasks.named('build') {
+        dependsOn(':hubspot.crm.engagement.notes-ballerina:build')
+    }
+} else {
+    task build {
+        dependsOn(':hubspot.crm.engagement.notes-ballerina:build')
+    }
 }
 
 release {
